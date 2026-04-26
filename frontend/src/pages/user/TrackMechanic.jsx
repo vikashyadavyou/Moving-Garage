@@ -7,7 +7,7 @@ import { STATUS_LABELS } from '../../utils/constants'
 import { formatCurrency, formatDistance, getStatusBadgeClass } from '../../utils/formatters'
 import BackButton from '../../components/BackButton'
 
-const STATUS_STEPS = ['pending', 'accepted', 'en_route', 'arrived', 'in_progress', 'completed']
+const STATUS_STEPS = ['pending', 'accepted', 'en_route', 'arrived', 'in_progress', 'pending_payment', 'completed']
 
 export default function TrackMechanic() {
   const { id } = useParams()
@@ -52,6 +52,12 @@ export default function TrackMechanic() {
         setShowQuoteModal(false)
         loadRequest()
       },
+      payment_requested: (data) => {
+        setRequest(prev => ({ ...prev, ...data.request, status: 'pending_payment' }))
+      },
+      cash_payment_pending: (data) => {
+        setRequest(prev => ({ ...prev, ...data.request, status: 'pending_cash' }))
+      },
       request_completed: (data) => {
         setRequest(prev => ({ ...prev, ...data.request, status: 'completed' }))
       },
@@ -91,17 +97,17 @@ export default function TrackMechanic() {
     try {
       const res = await paymentsAPI.createOrder({ service_request_id: id, payment_method: method })
       if (method === 'CASH') {
-        setRequest(prev => ({ ...prev, status: 'pending_cash' }))
+        setRequest(prev => ({ ...prev, status: 'pending_cash', payment_method: 'CASH' }))
         return
       }
       // Mock payment success for demo
-      await paymentsAPI.verifyPayment({
+      const verifyRes = await paymentsAPI.verifyPayment({
         razorpay_payment_id: `pay_mock_${Date.now()}`,
         razorpay_order_id: res.data.order_id,
         razorpay_signature: `sig_mock_${Date.now()}`,
       })
-      alert('✅ Payment successful!')
-      navigate('/user/dashboard')
+      // Online payment verified → backend marks job as completed
+      setRequest(prev => ({ ...prev, status: 'completed', payment_status: 'paid' }))
     } catch (err) {
       alert('Payment failed. Please try again.')
     } finally {
@@ -266,15 +272,32 @@ export default function TrackMechanic() {
 
       {/* Actions */}
       <div className="flex flex-col sm:flex-row gap-4 mt-6">
-        {request.status === 'completed' && request.payment_status !== 'paid' && (
-          <>
-            <button onClick={() => handlePayment('ONLINE')} disabled={!!payingMethod} className="btn-accent btn-lg flex-1">
-              {payingMethod === 'ONLINE' ? <span className="spinner border-white"></span> : '💳 Pay Online'}
-            </button>
-            <button onClick={() => handlePayment('CASH')} disabled={!!payingMethod} className="btn-primary btn-lg flex-1">
-              {payingMethod === 'CASH' ? <span className="spinner border-white"></span> : '💵 Pay with Cash'}
-            </button>
-          </>
+        {/* Payment UI — shown when mechanic requests payment */}
+        {request.status === 'pending_payment' && request.payment_status !== 'paid' && (
+          <div className="w-full">
+            <div className="p-5 bg-gradient-to-br from-blue-50 to-primary-50 rounded-2xl border border-blue-200 mb-4">
+              <h3 className="text-lg font-bold text-slate-900 mb-1">💳 Payment Required</h3>
+              <p className="text-sm text-slate-600 mb-4">
+                The mechanic has completed the repair. Please pay <strong className="text-primary-600">{formatCurrency(request.total_cost)}</strong> to close this request.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <button
+                  onClick={() => handlePayment('ONLINE')}
+                  disabled={!!payingMethod}
+                  className="btn-accent btn-lg flex-1 shadow-lg"
+                >
+                  {payingMethod === 'ONLINE' ? <span className="spinner border-white"></span> : '💳 Pay Online'}
+                </button>
+                <button
+                  onClick={() => handlePayment('CASH')}
+                  disabled={!!payingMethod}
+                  className="btn-primary btn-lg flex-1 shadow-lg"
+                >
+                  {payingMethod === 'CASH' ? <span className="spinner border-white"></span> : '💵 Pay with Cash'}
+                </button>
+              </div>
+            </div>
+          </div>
         )}
         {request.status === 'pending_cash' && (
            <div className="w-full p-4 bg-amber-50 rounded-xl text-center text-amber-700 shadow-sm border border-amber-200">
@@ -288,7 +311,15 @@ export default function TrackMechanic() {
               <button onClick={() => navigate('/user/dashboard')} className="btn-primary text-sm px-6">Back to Dashboard</button>
            </div>
         )}
-        {!['completed', 'cancelled', 'pending_cash'].includes(request.status) && request.payment_status !== 'paid' && (
+        {request.status === 'completed' && request.payment_status !== 'paid' && (
+           <div className="w-full p-4 bg-emerald-50 rounded-xl text-center text-emerald-700 shadow-sm border border-emerald-200 flex flex-col justify-center items-center">
+              <div className="text-4xl mb-2">🎉</div>
+              <div className="font-semibold mb-2">Service Completed!</div>
+              <button onClick={() => navigate('/user/dashboard')} className="btn-primary text-sm px-6">Back to Dashboard</button>
+           </div>
+        )}
+        {/* Cancel button — hidden during payment stages */}
+        {!['completed', 'cancelled', 'pending_cash', 'pending_payment'].includes(request.status) && request.payment_status !== 'paid' && (
           <button onClick={handleCancel} className="btn-danger flex-1">
             Cancel Request
           </button>

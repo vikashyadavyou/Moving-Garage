@@ -7,10 +7,12 @@ class ServiceRequestConsumer(AsyncWebsocketConsumer):
     """
     WebSocket consumer for real-time service request updates.
     Handles:
-    - Broadcasting new requests to available mechanics
+    - Broadcasting new requests to available mechanics (online only)
     - Status updates for active requests
     - Quote update notifications
+    - Payment flow notifications
     - Mechanic location tracking
+    - Pending request badge count
     """
 
     async def connect(self):
@@ -21,6 +23,8 @@ class ServiceRequestConsumer(AsyncWebsocketConsumer):
             self.room_group_name = f'request_{self.request_id}'
         else:
             # General broadcast channel for available requests
+            # Task 5: Only online mechanics should connect to this channel
+            # The frontend only connects when the mechanic is online
             self.room_group_name = 'available_requests'
 
         await self.channel_layer.group_add(
@@ -28,6 +32,14 @@ class ServiceRequestConsumer(AsyncWebsocketConsumer):
             self.channel_name,
         )
         await self.accept()
+
+        # Task 6: Send current pending count on connect
+        if not self.request_id:
+            count = await self.get_pending_count()
+            await self.send(text_data=json.dumps({
+                'type': 'pending_count_update',
+                'count': count,
+            }))
 
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(
@@ -64,6 +76,13 @@ class ServiceRequestConsumer(AsyncWebsocketConsumer):
             'request': event['request'],
         }))
 
+    async def pending_count_update(self, event):
+        """Send updated pending request count for badge."""
+        await self.send(text_data=json.dumps({
+            'type': 'pending_count_update',
+            'count': event['count'],
+        }))
+
     async def status_update(self, event):
         """Send status update for a specific request."""
         await self.send(text_data=json.dumps({
@@ -90,6 +109,22 @@ class ServiceRequestConsumer(AsyncWebsocketConsumer):
             'request_id': event['request_id'],
         }))
 
+    async def payment_requested(self, event):
+        """Notify user that mechanic has requested payment."""
+        await self.send(text_data=json.dumps({
+            'type': 'payment_requested',
+            'request_id': event['request_id'],
+            'request': event.get('request'),
+        }))
+
+    async def cash_payment_pending(self, event):
+        """Notify mechanic that user opted for cash payment."""
+        await self.send(text_data=json.dumps({
+            'type': 'cash_payment_pending',
+            'request_id': event['request_id'],
+            'request': event.get('request'),
+        }))
+
     async def request_completed(self, event):
         """Notify both parties that the request is completed."""
         await self.send(text_data=json.dumps({
@@ -113,3 +148,9 @@ class ServiceRequestConsumer(AsyncWebsocketConsumer):
             'type': 'request_cancelled',
             'request_id': event['request_id'],
         }))
+
+    @database_sync_to_async
+    def get_pending_count(self):
+        """Get the count of pending service requests."""
+        from .models import ServiceRequest
+        return ServiceRequest.objects.filter(status='pending').count()

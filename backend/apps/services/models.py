@@ -32,9 +32,10 @@ class ServiceRequest(models.Model):
         ('diagnosed', 'Diagnosed'),
         ('quote_pending', 'Quote Pending'),
         ('in_progress', 'In Progress'),
+        ('pending_payment', 'Pending Payment'),
+        ('pending_cash', 'Pending Cash Collection'),
         ('completed', 'Completed'),
         ('cancelled', 'Cancelled'),
-        ('pending_cash', 'Pending Cash Collection'),
     ]
 
     # Participants

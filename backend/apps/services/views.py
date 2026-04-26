@@ -233,27 +233,17 @@ class ApproveQuoteView(APIView):
 
 
 class CompleteRequestView(APIView):
-    """POST /api/v1/requests/{id}/complete/ - Mark as completed."""
-    permission_classes = [permissions.IsAuthenticated, IsMechanic]
+    """POST /api/v1/requests/{id}/complete/ - Mark as completed (after payment)."""
+    permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, pk):
-        service_request = get_object_or_404(
-            ServiceRequest, pk=pk, mechanic=request.user
-        )
+        service_request = get_object_or_404(ServiceRequest, pk=pk)
 
-        if service_request.status not in ('in_progress', 'arrived'):
+        # Only allow completion from payment-confirmed states
+        # This is called by the system after online payment verification
+        if service_request.status not in ('pending_payment',):
             return Response(
-                {'error': 'Cannot complete at this stage.'},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-
-        # If issue was overridden, check that user approved
-        if (
-            service_request.issue_was_overridden
-            and not service_request.user_approved_override
-        ):
-            return Response(
-                {'error': 'User has not approved the updated quote yet.'},
+                {'error': 'Cannot complete at this stage. Payment must be processed first.'},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
@@ -262,9 +252,10 @@ class CompleteRequestView(APIView):
         service_request.save()
 
         # Update mechanic stats
-        profile = request.user.mechanic_profile
-        profile.total_jobs_completed += 1
-        profile.save(update_fields=['total_jobs_completed'])
+        if service_request.mechanic:
+            profile = service_request.mechanic.mechanic_profile
+            profile.total_jobs_completed += 1
+            profile.save(update_fields=['total_jobs_completed'])
 
         return Response({
             'message': 'Service completed!',
@@ -280,14 +271,15 @@ class CancelRequestView(APIView):
         service_request = get_object_or_404(ServiceRequest, pk=pk)
 
         # Only allow the user to cancel, or mechanic before arrival
+        non_cancellable = ('in_progress', 'completed', 'pending_payment', 'pending_cash')
         if request.user == service_request.user:
-            if service_request.status in ('in_progress', 'completed'):
+            if service_request.status in non_cancellable:
                 return Response(
                     {'error': 'Cannot cancel at this stage.'},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
         elif request.user == service_request.mechanic:
-            if service_request.status in ('in_progress', 'completed'):
+            if service_request.status in non_cancellable:
                 return Response(
                     {'error': 'Cannot cancel at this stage.'},
                     status=status.HTTP_400_BAD_REQUEST,
@@ -332,9 +324,25 @@ class ConfirmCashPaymentView(APIView):
 
         # Update service request
         service_request.status = 'completed'
+        service_request.completed_at = timezone.now()
         service_request.save()
+
+        # Update mechanic stats
+        profile = request.user.mechanic_profile
+        profile.total_jobs_completed += 1
+        profile.save(update_fields=['total_jobs_completed'])
 
         return Response({
             'message': 'Cash payment confirmed!',
             'request': ServiceRequestSerializer(service_request).data,
         })
+
+
+class PendingRequestCountView(APIView):
+    """GET /api/v1/requests/pending-count/ - Get count of pending requests."""
+    permission_classes = [permissions.IsAuthenticated, IsMechanic]
+
+    def get(self, request):
+        count = ServiceRequest.objects.filter(status='pending').count()
+        return Response({'count': count})
+

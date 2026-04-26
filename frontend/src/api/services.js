@@ -12,4 +12,5 @@ export const servicesAPI = {
   completeRequest: (id) => api.post(`/requests/${id}/complete/`),
   confirmCash: (id) => api.post(`/requests/${id}/confirm-cash/`),
   cancelRequest: (id) => api.post(`/requests/${id}/cancel/`),
+  getPendingCount: () => api.get('/requests/pending-count/'),
 }

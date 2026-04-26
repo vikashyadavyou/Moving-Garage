@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { authAPI } from '../../api/auth'
 import { servicesAPI } from '../../api/services'
+import { createWebSocket } from '../../api/websocket'
 import { formatCurrency } from '../../utils/formatters'
 
 export default function MechanicDashboard() {
@@ -10,11 +11,14 @@ export default function MechanicDashboard() {
   const [isAvailable, setIsAvailable] = useState(false)
   const [stats, setStats] = useState({ total_jobs_completed: 0, rating: '5.00' })
   const [activeJobs, setActiveJobs] = useState([])
+  const [pendingCount, setPendingCount] = useState(0)
   const [toggling, setToggling] = useState(false)
   const [loading, setLoading] = useState(true)
+  const wsRef = useRef(null)
 
   useEffect(() => {
     loadData()
+    return () => wsRef.current?.close()
   }, [])
 
   const loadData = async () => {
@@ -27,11 +31,31 @@ export default function MechanicDashboard() {
       setIsAvailable(statsRes.data.is_available)
       const jobs = jobsRes.data.results || jobsRes.data || []
       setActiveJobs(jobs.filter(j => !['completed', 'cancelled'].includes(j.status)))
+
+      // Fetch pending count
+      try {
+        const countRes = await servicesAPI.getPendingCount()
+        setPendingCount(countRes.data.count || 0)
+      } catch (e) {}
+
+      // Connect WebSocket for live badge updates
+      connectWS()
     } catch (err) {
       console.error('Failed to load data:', err)
     } finally {
       setLoading(false)
     }
+  }
+
+  const connectWS = () => {
+    wsRef.current = createWebSocket('ws/requests/', {
+      new_request: () => {
+        setPendingCount(prev => prev + 1)
+      },
+      pending_count_update: (data) => {
+        setPendingCount(data.count || 0)
+      },
+    })
   }
 
   const toggleAvailability = async () => {
@@ -119,7 +143,7 @@ export default function MechanicDashboard() {
 
       {/* Quick Actions */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
-        <Link to="/mechanic/requests" className="card-interactive flex items-center gap-4 group">
+        <Link to="/mechanic/requests" className="card-interactive flex items-center gap-4 group relative">
           <div className="w-14 h-14 bg-gradient-to-br from-primary-100 to-primary-200 rounded-2xl flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
             📡
           </div>
@@ -127,6 +151,11 @@ export default function MechanicDashboard() {
             <div className="font-semibold text-slate-900">Incoming Requests</div>
             <div className="text-sm text-slate-500">View and accept new jobs</div>
           </div>
+          {pendingCount > 0 && (
+            <span className="absolute top-3 right-3 min-w-[24px] h-6 px-2 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center shadow-md animate-pulse">
+              {pendingCount > 99 ? '99+' : pendingCount}
+            </span>
+          )}
           <span className="ml-auto text-slate-400">→</span>
         </Link>
         <Link to="/mechanic/history" className="card-interactive flex items-center gap-4 group">

@@ -20,12 +20,24 @@ def broadcast_request_update(sender, instance, created, **kwargs):
     serialized = ServiceRequestSerializer(instance).data
 
     if created:
-        # New request → broadcast to all available mechanics
+        # Task 5: Only broadcast to online mechanics
+        # The broadcast goes to the 'available_requests' group which only
+        # online mechanics should be subscribed to. We also broadcast the
+        # count of pending requests for badge updates.
         async_to_sync(channel_layer.group_send)(
             'available_requests',
             {
                 'type': 'new_request',
                 'request': serialized,
+            }
+        )
+        # Also send a badge count update
+        pending_count = ServiceRequest.objects.filter(status='pending').count()
+        async_to_sync(channel_layer.group_send)(
+            'available_requests',
+            {
+                'type': 'pending_count_update',
+                'count': pending_count,
             }
         )
     else:
@@ -53,6 +65,26 @@ def broadcast_request_update(sender, instance, created, **kwargs):
                     'request': serialized,
                 }
             )
+        elif instance.status == 'pending_payment':
+            # Mechanic requested payment → notify user to pay
+            async_to_sync(channel_layer.group_send)(
+                request_group,
+                {
+                    'type': 'payment_requested',
+                    'request_id': instance.pk,
+                    'request': serialized,
+                }
+            )
+        elif instance.status == 'pending_cash':
+            # User opted for cash → notify mechanic
+            async_to_sync(channel_layer.group_send)(
+                request_group,
+                {
+                    'type': 'cash_payment_pending',
+                    'request_id': instance.pk,
+                    'request': serialized,
+                }
+            )
         elif instance.status == 'completed':
             async_to_sync(channel_layer.group_send)(
                 request_group,
@@ -62,12 +94,50 @@ def broadcast_request_update(sender, instance, created, **kwargs):
                     'request': serialized,
                 }
             )
+            # Update pending count for mechanics since one request is now done
+            pending_count = ServiceRequest.objects.filter(status='pending').count()
+            async_to_sync(channel_layer.group_send)(
+                'available_requests',
+                {
+                    'type': 'pending_count_update',
+                    'count': pending_count,
+                }
+            )
+        elif instance.status == 'accepted':
+            # Request accepted → update badge count for other mechanics
+            pending_count = ServiceRequest.objects.filter(status='pending').count()
+            async_to_sync(channel_layer.group_send)(
+                'available_requests',
+                {
+                    'type': 'pending_count_update',
+                    'count': pending_count,
+                }
+            )
+            # Also send status update to request group
+            async_to_sync(channel_layer.group_send)(
+                request_group,
+                {
+                    'type': 'status_update',
+                    'request_id': instance.pk,
+                    'status': instance.status,
+                    'request': serialized,
+                }
+            )
         elif instance.status == 'cancelled':
             async_to_sync(channel_layer.group_send)(
                 request_group,
                 {
                     'type': 'request_cancelled',
                     'request_id': instance.pk,
+                }
+            )
+            # Update badge count
+            pending_count = ServiceRequest.objects.filter(status='pending').count()
+            async_to_sync(channel_layer.group_send)(
+                'available_requests',
+                {
+                    'type': 'pending_count_update',
+                    'count': pending_count,
                 }
             )
         else:

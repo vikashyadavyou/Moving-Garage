@@ -60,6 +60,8 @@ export function getStatusBadgeClass(status) {
     diagnosed: 'badge-warning',
     quote_pending: 'badge-warning',
     in_progress: 'badge-primary',
+    pending_payment: 'badge-warning',
+    pending_cash: 'badge-warning',
     completed: 'badge-success',
     cancelled: 'badge-danger',
   }
