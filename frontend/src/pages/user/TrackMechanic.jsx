@@ -5,6 +5,7 @@ import { paymentsAPI } from '../../api/payments'
 import { createWebSocket } from '../../api/websocket'
 import { STATUS_LABELS } from '../../utils/constants'
 import { formatCurrency, formatDistance, getStatusBadgeClass } from '../../utils/formatters'
+import BackButton from '../../components/BackButton'
 
 const STATUS_STEPS = ['pending', 'accepted', 'en_route', 'arrived', 'in_progress', 'completed']
 
@@ -15,7 +16,7 @@ export default function TrackMechanic() {
   const [loading, setLoading] = useState(true)
   const [showQuoteModal, setShowQuoteModal] = useState(false)
   const [approving, setApproving] = useState(false)
-  const [paying, setPaying] = useState(false)
+  const [payingMethod, setPayingMethod] = useState(null)
   const wsRef = useRef(null)
 
   useEffect(() => {
@@ -55,7 +56,6 @@ export default function TrackMechanic() {
         setRequest(prev => ({ ...prev, ...data.request, status: 'completed' }))
       },
       mechanic_location: (data) => {
-        // Update mechanic location on map (future enhancement)
         if (data.eta_minutes) {
           setRequest(prev => ({ ...prev, estimated_arrival_minutes: data.eta_minutes }))
         }
@@ -86,10 +86,14 @@ export default function TrackMechanic() {
     }
   }
 
-  const handlePayment = async () => {
-    setPaying(true)
+  const handlePayment = async (method) => {
+    setPayingMethod(method)
     try {
-      const res = await paymentsAPI.createOrder({ service_request_id: id })
+      const res = await paymentsAPI.createOrder({ service_request_id: id, payment_method: method })
+      if (method === 'CASH') {
+        setRequest(prev => ({ ...prev, status: 'pending_cash' }))
+        return
+      }
       // Mock payment success for demo
       await paymentsAPI.verifyPayment({
         razorpay_payment_id: `pay_mock_${Date.now()}`,
@@ -101,7 +105,7 @@ export default function TrackMechanic() {
     } catch (err) {
       alert('Payment failed. Please try again.')
     } finally {
-      setPaying(false)
+      setPayingMethod(null)
     }
   }
 
@@ -122,9 +126,16 @@ export default function TrackMechanic() {
   }
 
   const currentStepIndex = STATUS_STEPS.indexOf(request.status)
+  const reportedIssues = request.reported_issues_detail || []
+  const actualIssues = request.actual_issues_detail || []
+  // Fallback to legacy single issue
+  const displayIssues = reportedIssues.length > 0 ? reportedIssues : (request.reported_issue_detail ? [request.reported_issue_detail] : [])
+  const displayActualIssues = actualIssues.length > 0 ? actualIssues : (request.actual_issue_detail ? [request.actual_issue_detail] : [])
 
   return (
     <div className="page-container max-w-3xl">
+      <BackButton />
+
       <div className="page-header">
         <div className="flex items-center justify-between">
           <div>
@@ -144,8 +155,6 @@ export default function TrackMechanic() {
           {STATUS_STEPS.map((step, i) => {
             const isCompleted = i < currentStepIndex
             const isCurrent = i === currentStepIndex
-            const isPending = i > currentStepIndex
-
             return (
               <div key={step} className="flex flex-col items-center flex-1">
                 <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold mb-2 transition-all duration-500 ${
@@ -161,9 +170,6 @@ export default function TrackMechanic() {
                 }`}>
                   {STATUS_LABELS[step]?.split(' ').slice(0, 2).join(' ')}
                 </span>
-                {i < STATUS_STEPS.length - 1 && (
-                  <div className="hidden"></div>
-                )}
               </div>
             )
           })}
@@ -190,24 +196,43 @@ export default function TrackMechanic() {
         </div>
       )}
 
-      {/* Cost Breakdown */}
+      {/* Cost Breakdown — Multi-issue */}
       <div className="card mb-6">
         <h2 className="text-lg font-semibold text-slate-900 mb-4">💰 Cost Breakdown</h2>
         <div className="space-y-3 text-sm">
-          <div className="flex justify-between items-center">
-            <span className="text-slate-600 flex items-center gap-2">
-              <span className="text-lg">{request.reported_issue_detail?.icon}</span>
-              {request.issue_was_overridden ? (
-                <>
-                  <span className="line-through text-slate-400">{request.reported_issue_detail?.name}</span>
-                  <span>→ {request.actual_issue_detail?.name}</span>
-                </>
-              ) : (
-                request.reported_issue_detail?.name
+          {/* Show reported issues */}
+          {displayIssues.map(issue => (
+            <div key={issue.id} className="flex justify-between items-center">
+              <span className="text-slate-600 flex items-center gap-2">
+                <span className="text-lg">{issue.icon}</span>
+                {request.issue_was_overridden ? (
+                  <span className="line-through text-slate-400">{issue.name}</span>
+                ) : (
+                  issue.name
+                )}
+              </span>
+              {!request.issue_was_overridden && (
+                <span className="font-semibold">{formatCurrency(issue.fixed_cost)}</span>
               )}
-            </span>
-            <span className="font-semibold">{formatCurrency(request.issue_cost)}</span>
-          </div>
+            </div>
+          ))}
+
+          {/* Show actual issues if overridden */}
+          {request.issue_was_overridden && displayActualIssues.length > 0 && (
+            <>
+              <div className="text-xs text-primary-500 font-medium pt-1">→ Actual issues found:</div>
+              {displayActualIssues.map(issue => (
+                <div key={issue.id} className="flex justify-between items-center">
+                  <span className="text-emerald-700 flex items-center gap-2">
+                    <span className="text-lg">{issue.icon}</span>
+                    {issue.name}
+                  </span>
+                  <span className="font-semibold">{formatCurrency(issue.fixed_cost)}</span>
+                </div>
+              ))}
+            </>
+          )}
+
           <div className="flex justify-between">
             <span className="text-slate-600">
               Travel Fee ({request.distance_km ? formatDistance(request.distance_km) : '—'} × ₹15/km)
@@ -240,20 +265,37 @@ export default function TrackMechanic() {
       )}
 
       {/* Actions */}
-      <div className="flex gap-4">
-        {request.status === 'completed' && (
-          <button onClick={handlePayment} disabled={paying} className="btn-accent btn-lg flex-1">
-            {paying ? <span className="spinner border-white"></span> : '💳 Pay Now'}
-          </button>
+      <div className="flex flex-col sm:flex-row gap-4 mt-6">
+        {request.status === 'completed' && request.payment_status !== 'paid' && (
+          <>
+            <button onClick={() => handlePayment('ONLINE')} disabled={!!payingMethod} className="btn-accent btn-lg flex-1">
+              {payingMethod === 'ONLINE' ? <span className="spinner border-white"></span> : '💳 Pay Online'}
+            </button>
+            <button onClick={() => handlePayment('CASH')} disabled={!!payingMethod} className="btn-primary btn-lg flex-1">
+              {payingMethod === 'CASH' ? <span className="spinner border-white"></span> : '💵 Pay with Cash'}
+            </button>
+          </>
         )}
-        {!['completed', 'cancelled'].includes(request.status) && (
+        {request.status === 'pending_cash' && (
+           <div className="w-full p-4 bg-amber-50 rounded-xl text-center text-amber-700 shadow-sm border border-amber-200">
+              <div className="font-semibold mb-1">⏳ Waiting for Cash Confirmation</div>
+              <div className="text-sm">Please pay <span className="font-bold">{formatCurrency(request.total_cost)}</span> in cash to the mechanic.</div>
+           </div>
+        )}
+        {request.payment_status === 'paid' && (
+           <div className="w-full p-4 bg-emerald-50 rounded-xl text-center text-emerald-700 shadow-sm border border-emerald-200 flex flex-col justify-center items-center">
+              <div className="font-semibold mb-2">✅ Payment Successful!</div>
+              <button onClick={() => navigate('/user/dashboard')} className="btn-primary text-sm px-6">Back to Dashboard</button>
+           </div>
+        )}
+        {!['completed', 'cancelled', 'pending_cash'].includes(request.status) && request.payment_status !== 'paid' && (
           <button onClick={handleCancel} className="btn-danger flex-1">
             Cancel Request
           </button>
         )}
       </div>
 
-      {/* Quote Approval Modal */}
+      {/* Quote Approval Modal — Enhanced for multi-issue */}
       {showQuoteModal && request.status === 'quote_pending' && (
         <div className="modal-overlay">
           <div className="modal-content">
@@ -263,27 +305,35 @@ export default function TrackMechanic() {
               </div>
               <h3 className="text-xl font-bold text-slate-900">Updated Diagnosis</h3>
               <p className="text-slate-500 mt-2 text-sm">
-                The mechanic has updated the issue after inspection.
+                The mechanic has updated the issue(s) after inspection.
               </p>
             </div>
 
             <div className="space-y-3 mb-6">
+              {/* Original Issues */}
               <div className="p-3 bg-red-50 rounded-xl">
-                <div className="text-xs text-red-500 font-medium">Original Issue</div>
-                <div className="font-semibold text-slate-900 flex items-center gap-2 mt-1">
-                  <span>{request.reported_issue_detail?.icon}</span>
-                  {request.reported_issue_detail?.name}
-                  <span className="ml-auto">{formatCurrency(request.reported_issue_detail?.fixed_cost)}</span>
-                </div>
+                <div className="text-xs text-red-500 font-medium mb-1">Original Issue(s)</div>
+                {displayIssues.map(issue => (
+                  <div key={issue.id} className="font-semibold text-slate-900 flex items-center gap-2 mt-1">
+                    <span>{issue.icon}</span>
+                    {issue.name}
+                    <span className="ml-auto text-sm">{formatCurrency(issue.fixed_cost)}</span>
+                  </div>
+                ))}
               </div>
+
               <div className="text-center text-slate-400">↓</div>
+
+              {/* Actual Issues */}
               <div className="p-3 bg-emerald-50 rounded-xl">
-                <div className="text-xs text-emerald-500 font-medium">Actual Issue</div>
-                <div className="font-semibold text-slate-900 flex items-center gap-2 mt-1">
-                  <span>{request.actual_issue_detail?.icon}</span>
-                  {request.actual_issue_detail?.name}
-                  <span className="ml-auto">{formatCurrency(request.actual_issue_detail?.fixed_cost)}</span>
-                </div>
+                <div className="text-xs text-emerald-500 font-medium mb-1">Actual Issue(s) Found</div>
+                {displayActualIssues.map(issue => (
+                  <div key={issue.id} className="font-semibold text-slate-900 flex items-center gap-2 mt-1">
+                    <span>{issue.icon}</span>
+                    {issue.name}
+                    <span className="ml-auto text-sm">{formatCurrency(issue.fixed_cost)}</span>
+                  </div>
+                ))}
               </div>
             </div>
 

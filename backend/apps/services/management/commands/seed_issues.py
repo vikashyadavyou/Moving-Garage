@@ -47,20 +47,44 @@ ISSUES = [
         'sort_order': 5,
     },
     {
-        'slug': 'towing',
-        'name': 'Towing to Garage',
-        'fixed_cost': 500,
-        'description': 'Tow the vehicle to the nearest authorized garage.',
-        'icon': '🚛',
+        'slug': 'pushing-to-garage',
+        'name': 'Pushing to Garage',
+        'fixed_cost': 25,
+        'description': 'Push the vehicle to the nearest authorized garage.',
+        'icon': '🏍️',
         'sort_order': 6,
     },
     {
         'slug': 'unknown-issue',
         'name': 'Unknown Issue (Diagnostic Fee)',
-        'fixed_cost': 100,
+        'fixed_cost': 25,
         'description': 'On-site diagnostic inspection. Fee is replaced by repair cost if a specific repair is needed.',
         'icon': '🔍',
         'sort_order': 7,
+    },
+    {
+        'slug': 'broken-drive-chain',
+        'name': 'Broken Drive Chain',
+        'fixed_cost': 150,
+        'description': 'Drive chain repair or replacement for 2-wheelers.',
+        'icon': '⛓️',
+        'sort_order': 8,
+    },
+    {
+        'slug': 'headlight-taillight',
+        'name': 'Headlight/Taillight Bulb Replacement',
+        'fixed_cost': 80,
+        'description': 'Headlight or taillight bulb replacement on-site.',
+        'icon': '💡',
+        'sort_order': 9,
+    },
+    {
+        'slug': 'engine-oil-leak',
+        'name': 'Engine Oil Leak',
+        'fixed_cost': 200,
+        'description': 'Diagnose and fix engine oil leakage.',
+        'icon': '🛢️',
+        'sort_order': 10,
     },
 ]
 
@@ -69,6 +93,15 @@ class Command(BaseCommand):
     help = 'Seed the issue catalog with predefined breakdown issues and pricing.'
 
     def handle(self, *args, **options):
+        # Deactivate the old 'towing' slug if it exists (renamed to pushing-to-garage)
+        old_towing = IssueCatalog.objects.filter(slug='towing').first()
+        if old_towing:
+            old_towing.is_active = False
+            old_towing.save(update_fields=['is_active'])
+            self.stdout.write(
+                self.style.WARNING(f'Deactivated old entry: {old_towing.name}')
+            )
+
         for issue_data in ISSUES:
             obj, created = IssueCatalog.objects.update_or_create(
                 slug=issue_data['slug'],

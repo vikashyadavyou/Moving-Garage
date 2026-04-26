@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { servicesAPI } from '../../api/services'
 import { STATUS_LABELS } from '../../utils/constants'
 import { formatCurrency, formatDateTime, getStatusBadgeClass } from '../../utils/formatters'
+import BackButton from '../../components/BackButton'
 
 export default function MechanicHistory() {
   const [jobs, setJobs] = useState([])
@@ -33,6 +34,8 @@ export default function MechanicHistory() {
 
   return (
     <div className="page-container max-w-4xl">
+      <BackButton />
+
       <div className="page-header">
         <h1 className="page-title">📋 Job History</h1>
         <p className="page-subtitle">Your completed jobs and earnings</p>

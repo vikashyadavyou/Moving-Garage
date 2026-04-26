@@ -63,6 +63,49 @@ class MechanicProfileSerializer(serializers.ModelSerializer):
         read_only_fields = ['id', 'rating', 'total_jobs_completed']
 
 
+class MechanicProfileInlineSerializer(serializers.ModelSerializer):
+    """Inline serializer for nesting inside user profile (no user nesting)."""
+
+    class Meta:
+        model = MechanicProfile
+        fields = [
+            'id', 'is_available', 'rating', 'total_jobs_completed',
+            'specializations', 'experience_years', 'bio',
+        ]
+        read_only_fields = ['id', 'rating', 'total_jobs_completed']
+
+
+class ProfileDetailSerializer(serializers.ModelSerializer):
+    """Enhanced profile serializer with nested mechanic profile support."""
+
+    mechanic_profile = MechanicProfileInlineSerializer(required=False)
+
+    class Meta:
+        model = User
+        fields = [
+            'id', 'username', 'email', 'first_name', 'last_name',
+            'phone', 'role', 'avatar', 'mechanic_profile',
+        ]
+        read_only_fields = ['id', 'username', 'role']
+
+    def update(self, instance, validated_data):
+        mechanic_data = validated_data.pop('mechanic_profile', None)
+
+        # Update user fields
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+
+        # Update mechanic profile if applicable
+        if mechanic_data and instance.role == 'mechanic':
+            profile, _ = MechanicProfile.objects.get_or_create(user=instance)
+            for attr, value in mechanic_data.items():
+                setattr(profile, attr, value)
+            profile.save()
+
+        return instance
+
+
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()
     password = serializers.CharField()

@@ -8,6 +8,7 @@ from django.contrib.auth import authenticate, get_user_model
 from .serializers import (
     UserRegistrationSerializer, UserSerializer,
     MechanicProfileSerializer, LoginSerializer,
+    ProfileDetailSerializer,
 )
 from .models import MechanicProfile
 from .permissions import IsMechanic
@@ -66,8 +67,8 @@ class LoginView(APIView):
 
 
 class ProfileView(generics.RetrieveUpdateAPIView):
-    """GET/PATCH /api/v1/auth/me/ - View and update user profile."""
-    serializer_class = UserSerializer
+    """GET/PATCH /api/v1/auth/me/ - View and update user profile with nested mechanic data."""
+    serializer_class = ProfileDetailSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_object(self):

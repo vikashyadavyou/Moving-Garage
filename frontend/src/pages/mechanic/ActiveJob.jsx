@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { servicesAPI } from '../../api/services'
 import { STATUS_LABELS } from '../../utils/constants'
 import { formatCurrency, formatDistance, getStatusBadgeClass } from '../../utils/formatters'
+import BackButton from '../../components/BackButton'
 
 export default function ActiveJob() {
   const { id } = useParams()
@@ -12,7 +13,7 @@ export default function ActiveJob() {
   const [updating, setUpdating] = useState(false)
   const [showDiagModal, setShowDiagModal] = useState(false)
   const [issues, setIssues] = useState([])
-  const [diagForm, setDiagForm] = useState({ actual_issue_id: '', notes: '' })
+  const [diagForm, setDiagForm] = useState({ actual_issue_ids: [], notes: '' })
 
   useEffect(() => {
     loadData()
@@ -45,21 +46,31 @@ export default function ActiveJob() {
     }
   }
 
+  const toggleDiagIssue = (issueId) => {
+    setDiagForm(f => {
+      const ids = f.actual_issue_ids.includes(issueId)
+        ? f.actual_issue_ids.filter(id => id !== issueId)
+        : [...f.actual_issue_ids, issueId]
+      return { ...f, actual_issue_ids: ids }
+    })
+  }
+
   const handleDiagnose = async () => {
-    if (!diagForm.actual_issue_id) {
-      alert('Please select the actual issue.')
+    if (diagForm.actual_issue_ids.length === 0) {
+      alert('Please select at least one actual issue.')
       return
     }
     setUpdating(true)
     try {
       const res = await servicesAPI.diagnoseOverride(id, {
-        actual_issue_id: parseInt(diagForm.actual_issue_id),
+        actual_issue_ids: diagForm.actual_issue_ids,
         notes: diagForm.notes,
       })
       setRequest(res.data.request)
       setShowDiagModal(false)
+      setDiagForm({ actual_issue_ids: [], notes: '' })
     } catch (err) {
-      alert(err.response?.data?.error || 'Failed to update diagnosis.')
+      alert(err.response?.data?.error || err.response?.data?.actual_issue_ids?.[0] || 'Failed to update diagnosis.')
     } finally {
       setUpdating(false)
     }
@@ -73,6 +84,19 @@ export default function ActiveJob() {
       setRequest(res.data.request)
     } catch (err) {
       alert(err.response?.data?.error || 'Cannot complete yet.')
+    } finally {
+      setUpdating(false)
+    }
+  }
+
+  const handleConfirmCash = async () => {
+    if (!confirm('Confirm you have received the exact cash amount from the user?')) return
+    setUpdating(true)
+    try {
+      const res = await servicesAPI.confirmCash(id)
+      setRequest(res.data.request)
+    } catch (err) {
+      alert(err.response?.data?.error || 'Failed to confirm cash payment.')
     } finally {
       setUpdating(false)
     }
@@ -94,8 +118,18 @@ export default function ActiveJob() {
 
   const nextAction = statusFlow[request.status]
 
+  const reportedIssues = request.reported_issues_detail || []
+  const actualIssues = request.actual_issues_detail || []
+  const displayIssues = reportedIssues.length > 0 ? reportedIssues : (request.reported_issue_detail ? [request.reported_issue_detail] : [])
+  const displayActualIssues = actualIssues.length > 0 ? actualIssues : (request.actual_issue_detail ? [request.actual_issue_detail] : [])
+
+  // Get IDs of currently reported issues to exclude from diagnosis modal
+  const reportedIssueIds = displayIssues.map(i => i.id)
+
   return (
     <div className="page-container max-w-3xl">
+      <BackButton />
+
       <div className="page-header">
         <div className="flex items-center justify-between">
           <div>
@@ -127,25 +161,40 @@ export default function ActiveJob() {
         </div>
       </div>
 
-      {/* Issue Details */}
+      {/* Issue Details — Multi-issue */}
       <div className="card mb-6">
         <h2 className="text-lg font-semibold text-slate-900 mb-3">⚡ Issue Details</h2>
-        <div className="flex items-center gap-4 p-4 bg-slate-50 rounded-xl">
-          <span className="text-3xl">{request.reported_issue_detail?.icon}</span>
-          <div>
-            <div className="font-semibold text-slate-900">
-              {request.reported_issue_detail?.name}
-              {request.issue_was_overridden && (
-                <span className="badge-warning ml-2">Overridden</span>
-              )}
-            </div>
-            {request.issue_was_overridden && request.actual_issue_detail && (
-              <div className="text-sm text-emerald-600 mt-1">
-                → Actual: {request.actual_issue_detail.icon} {request.actual_issue_detail.name}
+        <div className="space-y-2">
+          {displayIssues.map(issue => (
+            <div key={issue.id} className="flex items-center gap-4 p-3 bg-slate-50 rounded-xl">
+              <span className="text-2xl">{issue.icon}</span>
+              <div className="flex-1">
+                <div className="font-semibold text-slate-900">
+                  {issue.name}
+                  {request.issue_was_overridden && (
+                    <span className="badge-warning ml-2">Overridden</span>
+                  )}
+                </div>
               </div>
-            )}
-          </div>
+              <span className="font-medium text-primary-600">{formatCurrency(issue.fixed_cost)}</span>
+            </div>
+          ))}
         </div>
+
+        {request.issue_was_overridden && displayActualIssues.length > 0 && (
+          <div className="mt-3 space-y-2">
+            <div className="text-xs text-emerald-600 font-medium">→ Actual issues diagnosed:</div>
+            {displayActualIssues.map(issue => (
+              <div key={issue.id} className="flex items-center gap-4 p-3 bg-emerald-50 rounded-xl">
+                <span className="text-2xl">{issue.icon}</span>
+                <div className="flex-1">
+                  <div className="font-semibold text-slate-900">{issue.name}</div>
+                </div>
+                <span className="font-medium text-emerald-600">{formatCurrency(issue.fixed_cost)}</span>
+              </div>
+            ))}
+          </div>
+        )}
 
         {request.status === 'quote_pending' && (
           <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-xl text-sm text-amber-700">
@@ -207,6 +256,23 @@ export default function ActiveJob() {
           </button>
         )}
 
+        {/* Pending Cash Collection */}
+        {request.status === 'pending_cash' && (
+          <div className="p-6 bg-amber-50 rounded-2xl border border-amber-200">
+            <h3 className="text-lg font-bold text-amber-700 mb-2">💵 Cash Payment</h3>
+            <p className="text-sm text-amber-800 mb-4">
+              The user has opted to pay in cash. Please collect <strong>{formatCurrency(request.total_cost)}</strong> from the user.
+            </p>
+            <button
+              onClick={handleConfirmCash}
+              disabled={updating}
+              className="btn-primary btn-lg w-full shadow-lg"
+            >
+              {updating ? <span className="spinner border-white"></span> : `✅ Confirm Cash Received (${formatCurrency(request.total_cost)})`}
+            </button>
+          </div>
+        )}
+
         {request.status === 'completed' && (
           <div className="p-6 bg-emerald-50 rounded-2xl text-center">
             <div className="text-4xl mb-3">🎉</div>
@@ -221,33 +287,60 @@ export default function ActiveJob() {
         )}
       </div>
 
-      {/* Diagnostic Override Modal */}
+      {/* Diagnostic Override Modal — Multi-issue with checkboxes */}
       {showDiagModal && (
         <div className="modal-overlay">
           <div className="modal-content max-w-lg">
             <h3 className="text-xl font-bold text-slate-900 mb-2">🔍 Update Diagnosis</h3>
             <p className="text-sm text-slate-500 mb-6">
-              Select the actual issue found after inspection. This will recalculate the cost and notify the user for approval.
+              Select the actual issue(s) found after inspection. This will recalculate the cost and notify the user for approval.
             </p>
 
             <div className="space-y-2 max-h-64 overflow-y-auto mb-4">
-              {issues.filter(i => i.id !== request.reported_issue).map(issue => (
-                <button
-                  key={issue.id}
-                  type="button"
-                  onClick={() => setDiagForm(f => ({ ...f, actual_issue_id: issue.id }))}
-                  className={`w-full p-3 rounded-xl border-2 text-left transition-all flex items-center gap-3 ${
-                    diagForm.actual_issue_id === issue.id
-                      ? 'border-primary-500 bg-primary-50'
-                      : 'border-border hover:border-primary-200'
-                  }`}
-                >
-                  <span className="text-xl">{issue.icon}</span>
-                  <span className="text-sm font-medium text-slate-800 flex-1">{issue.name}</span>
-                  <span className="font-bold text-primary-600">{formatCurrency(issue.fixed_cost)}</span>
-                </button>
-              ))}
+              {issues.map(issue => {
+                const isChecked = diagForm.actual_issue_ids.includes(issue.id)
+                return (
+                  <button
+                    key={issue.id}
+                    type="button"
+                    onClick={() => toggleDiagIssue(issue.id)}
+                    className={`w-full p-3 rounded-xl border-2 text-left transition-all flex items-center gap-3 ${
+                      isChecked
+                        ? 'border-primary-500 bg-primary-50'
+                        : 'border-border hover:border-primary-200'
+                    }`}
+                  >
+                    <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center flex-shrink-0 ${
+                      isChecked ? 'bg-primary-500 border-primary-500' : 'border-slate-300'
+                    }`}>
+                      {isChecked && (
+                        <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                        </svg>
+                      )}
+                    </div>
+                    <span className="text-xl">{issue.icon}</span>
+                    <span className="text-sm font-medium text-slate-800 flex-1">{issue.name}</span>
+                    <span className="font-bold text-primary-600">{formatCurrency(issue.fixed_cost)}</span>
+                  </button>
+                )
+              })}
             </div>
+
+            {diagForm.actual_issue_ids.length > 0 && (
+              <div className="p-3 bg-primary-50 rounded-xl mb-4 text-sm">
+                <div className="flex justify-between font-semibold">
+                  <span>New Issue Cost</span>
+                  <span className="text-primary-600">
+                    {formatCurrency(
+                      issues
+                        .filter(i => diagForm.actual_issue_ids.includes(i.id))
+                        .reduce((sum, i) => sum + parseFloat(i.fixed_cost), 0)
+                    )}
+                  </span>
+                </div>
+              </div>
+            )}
 
             <div className="input-group">
               <label className="input-label">Notes (optional)</label>

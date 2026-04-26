@@ -34,11 +34,10 @@ class ServiceRequestCreateView(generics.CreateAPIView):
     def perform_create(self, serializer):
         request_obj = serializer.save(user=self.request.user)
 
-        # Calculate initial pricing with a default distance estimate
-        # (actual distance will be calculated when a mechanic accepts)
-        issue = request_obj.reported_issue
+        # Calculate initial pricing with all selected issues
+        issues = list(request_obj.reported_issues.all())
         default_distance = Decimal('5.00')  # Default 5km estimate
-        pricing = calculate_quote(default_distance, issue)
+        pricing = calculate_quote(default_distance, issues)
 
         request_obj.distance_km = pricing['distance_km']
         request_obj.distance_cost = pricing['distance_cost']
@@ -110,8 +109,12 @@ class AcceptRequestView(APIView):
         else:
             distance = Decimal('5.00')
 
-        # Recalculate pricing with actual distance
-        pricing = calculate_quote(distance, service_request.reported_issue)
+        # Recalculate pricing with actual distance and all reported issues
+        issues = list(service_request.reported_issues.all())
+        if not issues and service_request.reported_issue:
+            # Fallback to legacy FK
+            issues = [service_request.reported_issue]
+        pricing = calculate_quote(distance, issues)
 
         service_request.mechanic = mechanic
         service_request.status = 'accepted'
@@ -148,7 +151,7 @@ class UpdateStatusView(APIView):
 
 
 class DiagnoseOverrideView(APIView):
-    """PATCH /api/v1/requests/{id}/diagnose/ - Mechanic overrides the issue."""
+    """PATCH /api/v1/requests/{id}/diagnose/ - Mechanic overrides the issue(s)."""
     permission_classes = [permissions.IsAuthenticated, IsMechanic]
 
     def patch(self, request, pk):
@@ -165,19 +168,21 @@ class DiagnoseOverrideView(APIView):
         serializer = DiagnoseOverrideSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        new_issue = IssueCatalog.objects.get(
-            pk=serializer.validated_data['actual_issue_id']
-        )
+        issue_ids = serializer.validated_data['actual_issue_ids']
         notes = serializer.validated_data.get('notes', '')
+        new_issues = list(IssueCatalog.objects.filter(pk__in=issue_ids))
 
-        pricing = recalculate_on_override(service_request, new_issue)
-        service_request.override_notes = notes
-        service_request.save(update_fields=['override_notes'])
+        # Single consolidated save via recalculate_on_override (fixes double-save bug)
+        pricing = recalculate_on_override(service_request, new_issues, notes)
 
         return Response({
             'message': 'Diagnosis updated. Waiting for user approval.',
             'request': ServiceRequestSerializer(service_request).data,
-            'new_pricing': pricing,
+            'new_pricing': {
+                'distance_cost': str(pricing['distance_cost']),
+                'issue_cost': str(pricing['issue_cost']),
+                'total_cost': str(pricing['total_cost']),
+            },
         })
 
 
@@ -196,11 +201,30 @@ class ApproveQuoteView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
+        # On approval: accept the actual issues as the new active issues
         service_request.user_approved_override = True
         service_request.status = 'in_progress'
-        service_request.save(
-            update_fields=['user_approved_override', 'status', 'updated_at']
-        )
+
+        # Remove the "Unknown Issue" diagnostic fee from reported issues
+        # and replace with actual diagnosed issues
+        unknown_issue = IssueCatalog.objects.filter(slug='unknown-issue').first()
+        if unknown_issue and service_request.reported_issues.filter(pk=unknown_issue.pk).exists():
+            service_request.reported_issues.remove(unknown_issue)
+
+        # Add actual issues to the reported set so effective_issues reflects them
+        actual = service_request.actual_issues.all()
+        for issue in actual:
+            service_request.reported_issues.add(issue)
+
+        # Recalculate final bill based on the updated reported issues (minus unknown)
+        all_issues = list(service_request.reported_issues.all())
+        distance_km = service_request.distance_km or Decimal('5.00')
+        from .pricing import calculate_quote
+        pricing = calculate_quote(distance_km, all_issues)
+        service_request.issue_cost = pricing['issue_cost']
+        service_request.total_cost = pricing['total_cost']
+
+        service_request.save()
 
         return Response({
             'message': 'Quote approved. Mechanic can proceed with repair.',
@@ -280,5 +304,37 @@ class CancelRequestView(APIView):
 
         return Response({
             'message': 'Request cancelled.',
+            'request': ServiceRequestSerializer(service_request).data,
+        })
+
+
+class ConfirmCashPaymentView(APIView):
+    """POST /api/v1/requests/{id}/confirm-cash/ - Mechanic confirms cash received."""
+    permission_classes = [permissions.IsAuthenticated, IsMechanic]
+
+    def post(self, request, pk):
+        service_request = get_object_or_404(
+            ServiceRequest, pk=pk, mechanic=request.user
+        )
+
+        if service_request.status != 'pending_cash':
+            return Response(
+                {'error': 'No pending cash collection for this request.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        # Update payment
+        payment = getattr(service_request, 'payment', None)
+        if payment:
+            payment.status = 'paid'
+            payment.paid_at = timezone.now()
+            payment.save()
+
+        # Update service request
+        service_request.status = 'completed'
+        service_request.save()
+
+        return Response({
+            'message': 'Cash payment confirmed!',
             'request': ServiceRequestSerializer(service_request).data,
         })

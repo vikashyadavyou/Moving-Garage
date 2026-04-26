@@ -16,7 +16,7 @@ def calculate_distance(lat1, lon1, lat2, lon2):
 
     Returns: Distance in kilometers (Decimal)
     """
-    api_key = settings.GOOGLE_MAPS_API_KEY
+    api_key = settings.MAP_API_KEY
 
     if api_key:
         try:
@@ -73,7 +73,7 @@ def get_directions(origin_lat, origin_lng, dest_lat, dest_lng):
     Get directions from Google Maps Directions API.
     Returns route polyline and estimated duration.
     """
-    api_key = settings.GOOGLE_MAPS_API_KEY
+    api_key = settings.MAP_API_KEY
     if not api_key:
         return None
 

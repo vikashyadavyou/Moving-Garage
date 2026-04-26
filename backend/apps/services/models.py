@@ -34,6 +34,7 @@ class ServiceRequest(models.Model):
         ('in_progress', 'In Progress'),
         ('completed', 'Completed'),
         ('cancelled', 'Cancelled'),
+        ('pending_cash', 'Pending Cash Collection'),
     ]
 
     # Participants
@@ -54,10 +55,11 @@ class ServiceRequest(models.Model):
     vehicle_model = models.CharField(max_length=100)
     vehicle_year = models.PositiveIntegerField(null=True, blank=True)
 
-    # Issue tracking
+    # Issue tracking — Legacy single FK (kept for backward compat, nullable)
     reported_issue = models.ForeignKey(
         IssueCatalog,
         on_delete=models.PROTECT,
+        null=True, blank=True,
         related_name='reported_requests',
     )
     actual_issue = models.ForeignKey(
@@ -66,6 +68,19 @@ class ServiceRequest(models.Model):
         null=True, blank=True,
         related_name='actual_requests',
     )
+
+    # Issue tracking — New M2M fields for multiple issue selection
+    reported_issues = models.ManyToManyField(
+        IssueCatalog,
+        related_name='reported_requests_multi',
+        blank=True,
+    )
+    actual_issues = models.ManyToManyField(
+        IssueCatalog,
+        related_name='actual_requests_multi',
+        blank=True,
+    )
+
     issue_was_overridden = models.BooleanField(default=False)
     user_approved_override = models.BooleanField(default=False)
     override_notes = models.TextField(blank=True, default='')
@@ -110,6 +125,15 @@ class ServiceRequest(models.Model):
         return f"SR-{self.pk} | {self.user.username} | {self.get_status_display()}"
 
     @property
+    def effective_issues(self):
+        """Returns the actual issues if overridden, else the reported issues."""
+        if self.issue_was_overridden and self.actual_issues.exists():
+            return self.actual_issues.all()
+        return self.reported_issues.all()
+
+    @property
     def effective_issue(self):
-        """Returns the actual issue if overridden, else the reported issue."""
-        return self.actual_issue if self.issue_was_overridden else self.reported_issue
+        """Legacy single-issue accessor for backward compat."""
+        if self.issue_was_overridden and self.actual_issue:
+            return self.actual_issue
+        return self.reported_issue

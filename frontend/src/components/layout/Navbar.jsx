@@ -19,12 +19,14 @@ export default function Navbar() {
     { path: '/user/dashboard', label: 'Dashboard', icon: '🏠' },
     { path: '/user/new-request', label: 'Get Help', icon: '🆘' },
     { path: '/user/history', label: 'History', icon: '📋' },
+    { path: '/profile', label: 'Profile', icon: '👤' },
   ]
 
   const mechanicLinks = [
     { path: '/mechanic/dashboard', label: 'Dashboard', icon: '🏠' },
     { path: '/mechanic/requests', label: 'Requests', icon: '📡' },
     { path: '/mechanic/history', label: 'History', icon: '📋' },
+    { path: '/profile', label: 'Profile', icon: '👤' },
   ]
 
   const links = user?.role === 'mechanic' ? mechanicLinks : userLinks

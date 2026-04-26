@@ -16,6 +16,7 @@ class CreatePaymentOrderView(APIView):
 
     def post(self, request):
         request_id = request.data.get('service_request_id')
+        payment_method = request.data.get('payment_method', 'ONLINE')
         service_request = get_object_or_404(
             ServiceRequest, pk=request_id
         )
@@ -27,6 +28,29 @@ class CreatePaymentOrderView(APIView):
             )
 
         amount = service_request.total_cost
+
+        if payment_method == 'CASH':
+            payment, created = Payment.objects.get_or_create(
+                service_request=service_request,
+                defaults={
+                    'amount': amount,
+                    'payment_method': 'CASH',
+                    'status': 'created'
+                }
+            )
+            if not created and payment.payment_method != 'CASH':
+                payment.payment_method = 'CASH'
+                payment.save()
+            
+            service_request.status = 'pending_cash'
+            service_request.save()
+            
+            return Response({
+                'message': 'Cash payment intent created',
+                'status': 'pending_cash',
+                'payment': PaymentSerializer(payment).data,
+            })
+
         amount_paise = int(float(amount) * 100)
 
         # Try Razorpay, fall back to mock
@@ -48,10 +72,12 @@ class CreatePaymentOrderView(APIView):
             defaults={
                 'razorpay_order_id': order_id,
                 'amount': amount,
+                'payment_method': 'ONLINE',
             }
         )
         if not created:
             payment.razorpay_order_id = order_id
+            payment.payment_method = 'ONLINE'
             payment.save()
 
         return Response({

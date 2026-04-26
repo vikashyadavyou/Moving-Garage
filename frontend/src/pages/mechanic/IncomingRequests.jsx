@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import { servicesAPI } from '../../api/services'
 import { createWebSocket } from '../../api/websocket'
 import { formatCurrency, formatDistance, formatRelativeTime } from '../../utils/formatters'
+import BackButton from '../../components/BackButton'
+import { useNotification } from '../../context/NotificationContext'
 
 export default function IncomingRequests() {
   const navigate = useNavigate()
@@ -10,6 +12,7 @@ export default function IncomingRequests() {
   const [loading, setLoading] = useState(true)
   const [accepting, setAccepting] = useState(null)
   const wsRef = useRef(null)
+  const { showNotification } = useNotification()
 
   useEffect(() => {
     loadRequests()
@@ -32,6 +35,8 @@ export default function IncomingRequests() {
     wsRef.current = createWebSocket('ws/requests/', {
       new_request: (data) => {
         setRequests(prev => [data.request, ...prev])
+        // NotificationContext will ALSO show the toast, 
+        // we just need to ensure the list updates.
       },
     })
   }
@@ -58,6 +63,8 @@ export default function IncomingRequests() {
 
   return (
     <div className="page-container max-w-4xl">
+      <BackButton />
+
       <div className="page-header">
         <h1 className="page-title">📡 Incoming Requests</h1>
         <p className="page-subtitle">

@@ -3,19 +3,19 @@ import { useNavigate } from 'react-router-dom'
 import { servicesAPI } from '../../api/services'
 import { VEHICLE_MAKES } from '../../utils/constants'
 import { formatCurrency } from '../../utils/formatters'
+import BackButton from '../../components/BackButton'
 
 export default function NewRequest() {
   const navigate = useNavigate()
   const [issues, setIssues] = useState([])
   const [loading, setLoading] = useState(false)
   const [fetchingLocation, setFetchingLocation] = useState(false)
-  const [selectedIssue, setSelectedIssue] = useState(null)
+  const [selectedIssues, setSelectedIssues] = useState([])
 
   const [form, setForm] = useState({
     vehicle_make: '',
     vehicle_model: '',
     vehicle_year: '',
-    reported_issue: '',
     user_latitude: '',
     user_longitude: '',
     user_address: '',
@@ -60,15 +60,26 @@ export default function NewRequest() {
     )
   }
 
-  const handleIssueSelect = (issue) => {
-    setSelectedIssue(issue)
-    setForm(f => ({ ...f, reported_issue: issue.id }))
+  const toggleIssue = (issue) => {
+    setSelectedIssues(prev => {
+      const exists = prev.find(i => i.id === issue.id)
+      if (exists) {
+        return prev.filter(i => i.id !== issue.id)
+      }
+      return [...prev, issue]
+    })
   }
+
+  const isSelected = (issueId) => selectedIssues.some(i => i.id === issueId)
+
+  const totalIssueCost = selectedIssues.reduce(
+    (sum, issue) => sum + parseFloat(issue.fixed_cost), 0
+  )
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!form.reported_issue) {
-      setError('Please select an issue type.')
+    if (selectedIssues.length === 0) {
+      setError('Please select at least one issue type.')
       return
     }
     if (!form.user_latitude || !form.user_longitude) {
@@ -82,11 +93,12 @@ export default function NewRequest() {
       const res = await servicesAPI.createRequest({
         ...form,
         vehicle_year: form.vehicle_year ? parseInt(form.vehicle_year) : null,
+        reported_issue_ids: selectedIssues.map(i => i.id),
       })
       const requestData = res.data
       navigate(`/user/track/${requestData.id}`)
     } catch (err) {
-      setError(err.response?.data?.detail || 'Failed to create request. Please try again.')
+      setError(err.response?.data?.detail || err.response?.data?.reported_issue_ids?.[0] || 'Failed to create request. Please try again.')
     } finally {
       setLoading(false)
     }
@@ -94,6 +106,8 @@ export default function NewRequest() {
 
   return (
     <div className="page-container max-w-3xl">
+      <BackButton />
+
       <div className="page-header">
         <h1 className="page-title">🆘 Request Help</h1>
         <p className="page-subtitle">Tell us about your vehicle and the issue</p>
@@ -153,47 +167,64 @@ export default function NewRequest() {
           </div>
         </div>
 
-        {/* Issue Selection */}
+        {/* Issue Selection — Multi-select with checkboxes */}
         <div className="card mb-6">
-          <h2 className="text-lg font-semibold text-slate-900 mb-4">⚡ What's the Issue?</h2>
+          <h2 className="text-lg font-semibold text-slate-900 mb-2">⚡ What's the Issue?</h2>
+          <p className="text-sm text-slate-500 mb-4">
+            Select one or more issues. You can pick a repair + "Pushing to Garage" together.
+          </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {issues.map(issue => (
-              <button
-                key={issue.id}
-                type="button"
-                onClick={() => handleIssueSelect(issue)}
-                className={`p-4 rounded-xl border-2 text-left transition-all group ${
-                  selectedIssue?.id === issue.id
-                    ? 'border-primary-500 bg-primary-50 shadow-md'
-                    : 'border-border hover:border-primary-200 hover:bg-slate-50'
-                }`}
-              >
-                <div className="flex items-start gap-3">
-                  <span className="text-2xl group-hover:scale-110 transition-transform">
-                    {issue.icon}
-                  </span>
-                  <div className="flex-1">
-                    <div className="font-medium text-slate-900 text-sm leading-tight">
-                      {issue.name}
+            {issues.map(issue => {
+              const selected = isSelected(issue.id)
+              return (
+                <button
+                  key={issue.id}
+                  type="button"
+                  onClick={() => toggleIssue(issue)}
+                  className={`p-4 rounded-xl border-2 text-left transition-all group ${
+                    selected
+                      ? 'border-primary-500 bg-primary-50 shadow-md'
+                      : 'border-border hover:border-primary-200 hover:bg-slate-50'
+                  }`}
+                  id={`issue-select-${issue.slug || issue.id}`}
+                >
+                  <div className="flex items-start gap-3">
+                    {/* Checkbox indicator */}
+                    <div className={`w-5 h-5 mt-0.5 rounded-md border-2 flex items-center justify-center flex-shrink-0 transition-all ${
+                      selected
+                        ? 'bg-primary-500 border-primary-500'
+                        : 'border-slate-300 group-hover:border-primary-300'
+                    }`}>
+                      {selected && (
+                        <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                        </svg>
+                      )}
                     </div>
-                    <div className="text-lg font-bold text-primary-600 mt-1">
-                      {formatCurrency(issue.fixed_cost)}
+                    <span className="text-2xl group-hover:scale-110 transition-transform">
+                      {issue.icon}
+                    </span>
+                    <div className="flex-1">
+                      <div className="font-medium text-slate-900 text-sm leading-tight">
+                        {issue.name}
+                      </div>
+                      <div className="text-lg font-bold text-primary-600 mt-1">
+                        {formatCurrency(issue.fixed_cost)}
+                      </div>
+                      {issue.description && (
+                        <div className="text-xs text-slate-500 mt-1">{issue.description}</div>
+                      )}
                     </div>
-                    {issue.description && (
-                      <div className="text-xs text-slate-500 mt-1">{issue.description}</div>
-                    )}
                   </div>
-                  {selectedIssue?.id === issue.id && (
-                    <div className="w-6 h-6 bg-primary-500 rounded-full flex items-center justify-center flex-shrink-0">
-                      <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                      </svg>
-                    </div>
-                  )}
-                </div>
-              </button>
-            ))}
+                </button>
+              )
+            })}
           </div>
+          {selectedIssues.length > 1 && (
+            <div className="mt-3 text-sm text-primary-600 font-medium">
+              ✓ {selectedIssues.length} issues selected
+            </div>
+          )}
         </div>
 
         {/* Location */}
@@ -227,14 +258,18 @@ export default function NewRequest() {
         </div>
 
         {/* Cost Estimate */}
-        {selectedIssue && (
+        {selectedIssues.length > 0 && (
           <div className="card mb-6 bg-gradient-to-br from-primary-50 to-white border-primary-200 animate-slide-up">
             <h3 className="font-semibold text-slate-900 mb-3">💰 Estimated Cost</h3>
             <div className="space-y-2 text-sm">
-              <div className="flex justify-between">
-                <span className="text-slate-600">{selectedIssue.name}</span>
-                <span className="font-medium">{formatCurrency(selectedIssue.fixed_cost)}</span>
-              </div>
+              {selectedIssues.map(issue => (
+                <div key={issue.id} className="flex justify-between">
+                  <span className="text-slate-600">
+                    {issue.icon} {issue.name}
+                  </span>
+                  <span className="font-medium">{formatCurrency(issue.fixed_cost)}</span>
+                </div>
+              ))}
               <div className="flex justify-between">
                 <span className="text-slate-600">Travel Fee (₹15/km)</span>
                 <span className="text-slate-500 italic">Calculated after mechanic accepts</span>
@@ -242,7 +277,7 @@ export default function NewRequest() {
               <div className="border-t border-primary-200 pt-2 flex justify-between">
                 <span className="font-semibold text-slate-900">Issue Cost</span>
                 <span className="font-bold text-primary-600 text-lg">
-                  {formatCurrency(selectedIssue.fixed_cost)}+
+                  {formatCurrency(totalIssueCost)}+
                 </span>
               </div>
             </div>
@@ -252,8 +287,9 @@ export default function NewRequest() {
         {/* Submit */}
         <button
           type="submit"
-          disabled={loading || !form.reported_issue}
+          disabled={loading || selectedIssues.length === 0}
           className="btn-primary btn-lg w-full shadow-lg"
+          id="submit-request-btn"
         >
           {loading ? (
             <span className="spinner border-white"></span>

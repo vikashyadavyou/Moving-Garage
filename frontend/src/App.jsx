@@ -8,6 +8,9 @@ import Navbar from './components/layout/Navbar'
 import Login from './pages/auth/Login'
 import Register from './pages/auth/Register'
 
+// Shared Pages
+import Profile from './pages/Profile'
+
 // User Pages
 import UserDashboard from './pages/user/UserDashboard'
 import NewRequest from './pages/user/NewRequest'
@@ -63,6 +66,11 @@ export default function App() {
           } />
           <Route path="/auth/login" element={<Login />} />
           <Route path="/auth/register" element={<Register />} />
+
+          {/* Shared */}
+          <Route path="/profile" element={
+            <ProtectedRoute allowedRoles={['user', 'mechanic']}><Profile /></ProtectedRoute>
+          } />
 
           {/* User Routes */}
           <Route path="/user/dashboard" element={

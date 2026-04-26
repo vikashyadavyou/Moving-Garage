@@ -142,10 +142,10 @@ CHANNEL_LAYERS = {
     }
 }
 
-# External API Keys
-GOOGLE_MAPS_API_KEY = os.environ.get('GOOGLE_MAPS_API_KEY', '')
-RAZORPAY_KEY_ID = os.environ.get('RAZORPAY_KEY_ID', '')
-RAZORPAY_KEY_SECRET = os.environ.get('RAZORPAY_KEY_SECRET', '')
+# External API Keys (provider-agnostic)
+MAP_API_KEY = os.environ.get('MAP_API_KEY', os.environ.get('GOOGLE_MAPS_API_KEY', ''))
+PAYMENT_GATEWAY_KEY = os.environ.get('PAYMENT_GATEWAY_KEY', os.environ.get('RAZORPAY_KEY_ID', ''))
+PAYMENT_GATEWAY_SECRET = os.environ.get('PAYMENT_GATEWAY_SECRET', os.environ.get('RAZORPAY_KEY_SECRET', ''))
 
 # Pricing Constants
 DISTANCE_RATE_PER_KM = 15  # ₹15 per km

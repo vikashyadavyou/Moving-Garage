@@ -12,6 +12,15 @@ class Payment(models.Model):
         ('refunded', 'Refunded'),
     ]
 
+    PAYMENT_METHOD_CHOICES = [
+        ('ONLINE', 'Online'),
+        ('CASH', 'Cash'),
+    ]
+
+    payment_method = models.CharField(
+        max_length=10, choices=PAYMENT_METHOD_CHOICES, default='ONLINE'
+    )
+
     service_request = models.OneToOneField(
         ServiceRequest, on_delete=models.CASCADE, related_name='payment'
     )

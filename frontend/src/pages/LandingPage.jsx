@@ -39,23 +39,27 @@ export default function LandingPage() {
             </div>
 
             {/* Stats */}
-            <div className="flex flex-wrap gap-8 mt-16 animate-slide-up" style={{ animationDelay: '0.3s' }}>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-y-8 gap-x-6 mt-16 animate-slide-up" style={{ animationDelay: '0.3s' }}>
+  
               <div>
-                <div className="text-3xl font-bold text-slate-900">500+</div>
-                <div className="text-sm text-slate-500">Verified Mechanics</div>
+                <div className="text-xl font-bold text-slate-900 whitespace-nowrap">Live Map</div>
+                <div className="text-sm text-slate-500 mt-1">Track arrivals</div>
               </div>
+
               <div>
-                <div className="text-3xl font-bold text-slate-900">10K+</div>
-                <div className="text-sm text-slate-500">Rescues Done</div>
+                <div className="text-xl font-bold text-slate-900 whitespace-nowrap">Fair Pricing</div>
+                <div className="text-sm text-slate-500 mt-1">Fixed upfront</div>
               </div>
-              <div>
-                <div className="text-3xl font-bold text-slate-900">4.8★</div>
-                <div className="text-sm text-slate-500">Average Rating</div>
-              </div>
-              <div>
-                <div className="text-3xl font-bold text-slate-900">~15 min</div>
-                <div className="text-sm text-slate-500">Avg. Response</div>
-              </div>
+
+                <div>
+                  <div className="text-xl font-bold text-slate-900 whitespace-nowrap">Fast Dispatch</div>
+                  <div className="text-sm text-slate-500 mt-1">Instant matching</div>
+                </div>
+
+                <div>
+                  <div className="text-xl font-bold text-slate-900 whitespace-nowrap">2-Wheeler Experts</div>
+                  <div className="text-sm text-slate-500 mt-1">Specialized help</div>
+                </div>
             </div>
           </div>
         </div>
@@ -168,11 +172,11 @@ export default function LandingPage() {
             Don't Stay Stranded
           </h2>
           <p className="text-lg text-primary-200 mb-10 max-w-2xl mx-auto">
-            Join thousands of commuters who trust Moving Garage for roadside assistance.
+            Get help through Moving Garage - Your trusted 2-wheeler breakdown buddy. Fast, reliable and transparent assistance at your fingertips.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link to="/auth/register" className="btn-lg bg-white text-primary-700 font-bold rounded-2xl hover:bg-primary-50 shadow-lg transition-all">
-              Get Started Free
+              Get Started
             </Link>
           </div>
         </div>
@@ -188,7 +192,7 @@ export default function LandingPage() {
               </div>
               <span className="font-bold text-white">Moving Garage</span>
             </div>
-            <p className="text-sm">© 2024 Moving Garage. On-demand 2-wheeler assistance.</p>
+            <p className="text-sm">Moving Garage. On-demand 2-wheeler assistance.</p>
           </div>
         </div>
       </footer>

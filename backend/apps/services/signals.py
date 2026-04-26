@@ -33,12 +33,18 @@ def broadcast_request_update(sender, instance, created, **kwargs):
 
         if instance.status == 'quote_pending':
             # Mechanic overrode diagnosis → notify user
+            actual_names = []
+            if instance.actual_issues.exists():
+                actual_names = list(instance.actual_issues.values_list('name', flat=True))
+            elif instance.actual_issue:
+                actual_names = [instance.actual_issue.name]
+
             async_to_sync(channel_layer.group_send)(
                 request_group,
                 {
                     'type': 'quote_update',
                     'request_id': instance.pk,
-                    'new_issue': instance.actual_issue.name if instance.actual_issue else '',
+                    'new_issue': ', '.join(actual_names),
                     'new_pricing': {
                         'distance_cost': str(instance.distance_cost),
                         'issue_cost': str(instance.issue_cost),

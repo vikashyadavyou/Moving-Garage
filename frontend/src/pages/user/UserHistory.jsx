@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { servicesAPI } from '../../api/services'
 import { STATUS_LABELS } from '../../utils/constants'
 import { formatCurrency, formatDateTime, getStatusBadgeClass } from '../../utils/formatters'
+import BackButton from '../../components/BackButton'
 
 export default function UserHistory() {
   const [requests, setRequests] = useState([])
@@ -33,6 +34,8 @@ export default function UserHistory() {
 
   return (
     <div className="page-container max-w-4xl">
+      <BackButton />
+
       <div className="page-header">
         <h1 className="page-title">📋 Request History</h1>
         <p className="page-subtitle">All your past service requests</p>

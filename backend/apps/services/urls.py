@@ -11,5 +11,6 @@ urlpatterns = [
     path('requests/<int:pk>/diagnose/', views.DiagnoseOverrideView.as_view(), name='request-diagnose'),
     path('requests/<int:pk>/approve-quote/', views.ApproveQuoteView.as_view(), name='request-approve-quote'),
     path('requests/<int:pk>/complete/', views.CompleteRequestView.as_view(), name='request-complete'),
+    path('requests/<int:pk>/confirm-cash/', views.ConfirmCashPaymentView.as_view(), name='request-confirm-cash'),
     path('requests/<int:pk>/cancel/', views.CancelRequestView.as_view(), name='request-cancel'),
 ]
