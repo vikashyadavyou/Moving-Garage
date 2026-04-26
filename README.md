@@ -24,7 +24,7 @@
 * React.js (Vite)
 * Tailwind CSS (Responsive UI/UX)
 * React Router (Navigation)
-* Mapbox GL JS (Interactive Maps)
+* MapLibre GL JS (Interactive Maps)
 
 **Backend:**
 * Python 3
@@ -33,7 +33,7 @@
 * SQLite (Development Database)
 
 **Third-Party Integrations:**
-* **Mapbox API:** Geocoding, routing, and real-time map rendering.
+* **Geoapify API:** Free tier geocoding, routing algorithms (distance calculation), and real-time map tile rendering.
 * **Razorpay API:** Secure online payment processing and checkout routing.
 
 ## 🔄 System Workflow

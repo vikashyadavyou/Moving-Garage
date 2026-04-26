@@ -1,6 +1,7 @@
 """
-Google Maps API helper utilities.
-Provides distance calculation and geocoding.
+Geoapify API helper utilities.
+Provides routing-based distance calculation and directions.
+Falls back to Haversine formula when API key is not configured.
 """
 import math
 import requests
@@ -11,7 +12,7 @@ from decimal import Decimal
 def calculate_distance(lat1, lon1, lat2, lon2):
     """
     Calculate distance between two GPS coordinates.
-    Uses Google Maps Distance Matrix API if available,
+    Uses Geoapify Routing API if available (motorcycle mode),
     otherwise falls back to Haversine formula.
 
     Returns: Distance in kilometers (Decimal)
@@ -20,21 +21,21 @@ def calculate_distance(lat1, lon1, lat2, lon2):
 
     if api_key:
         try:
-            url = 'https://maps.googleapis.com/maps/api/distancematrix/json'
-            params = {
-                'origins': f'{lat1},{lon1}',
-                'destinations': f'{lat2},{lon2}',
-                'key': api_key,
-                'units': 'metric',
-            }
-            response = requests.get(url, params=params, timeout=10)
+            url = (
+                f'https://api.geoapify.com/v1/routing'
+                f'?waypoints={lat1},{lon1}|{lat2},{lon2}'
+                f'&mode=motorcycle'
+                f'&apiKey={api_key}'
+            )
+            response = requests.get(url, timeout=10)
             data = response.json()
 
-            if data['status'] == 'OK':
-                element = data['rows'][0]['elements'][0]
-                if element['status'] == 'OK':
-                    meters = element['distance']['value']
-                    return Decimal(str(round(meters / 1000, 2)))
+            # Geoapify returns GeoJSON FeatureCollection
+            # Distance is in meters at features[0].properties.distance
+            if data.get('features') and len(data['features']) > 0:
+                distance_meters = data['features'][0]['properties']['distance']
+                distance_km = round(distance_meters / 1000, 2)
+                return Decimal(str(distance_km))
         except Exception:
             pass
 
@@ -70,32 +71,39 @@ def haversine_distance(lat1, lon1, lat2, lon2):
 
 def get_directions(origin_lat, origin_lng, dest_lat, dest_lng):
     """
-    Get directions from Google Maps Directions API.
-    Returns route polyline and estimated duration.
+    Get directions from Geoapify Routing API.
+    Returns route geometry, distance, and estimated duration.
     """
     api_key = settings.MAP_API_KEY
     if not api_key:
         return None
 
     try:
-        url = 'https://maps.googleapis.com/maps/api/directions/json'
-        params = {
-            'origin': f'{origin_lat},{origin_lng}',
-            'destination': f'{dest_lat},{dest_lng}',
-            'key': api_key,
-            'mode': 'driving',
-        }
-        response = requests.get(url, params=params, timeout=10)
+        url = (
+            f'https://api.geoapify.com/v1/routing'
+            f'?waypoints={origin_lat},{origin_lng}|{dest_lat},{dest_lng}'
+            f'&mode=motorcycle'
+            f'&apiKey={api_key}'
+        )
+        response = requests.get(url, timeout=10)
         data = response.json()
 
-        if data['status'] == 'OK':
-            route = data['routes'][0]
-            leg = route['legs'][0]
+        if data.get('features') and len(data['features']) > 0:
+            feature = data['features'][0]
+            props = feature['properties']
+            geometry = feature['geometry']
+
+            # Distance in meters, time in seconds
             return {
-                'distance': leg['distance'],
-                'duration': leg['duration'],
-                'polyline': route['overview_polyline']['points'],
-                'steps': leg['steps'],
+                'distance': {
+                    'value': props['distance'],
+                    'text': f"{round(props['distance'] / 1000, 1)} km",
+                },
+                'duration': {
+                    'value': props['time'],
+                    'text': f"{round(props['time'] / 60)} mins",
+                },
+                'geometry': geometry,  # GeoJSON LineString for map rendering
             }
     except Exception:
         pass

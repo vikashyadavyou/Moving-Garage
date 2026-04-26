@@ -5,6 +5,7 @@ import { createWebSocket } from '../../api/websocket'
 import { STATUS_LABELS } from '../../utils/constants'
 import { formatCurrency, formatDistance, getStatusBadgeClass } from '../../utils/formatters'
 import BackButton from '../../components/BackButton'
+import LiveMap from '../../components/LiveMap'
 
 export default function ActiveJob() {
   const { id } = useParams()
@@ -181,6 +182,16 @@ export default function ActiveJob() {
           </div>
         </div>
       </div>
+
+      {/* Navigation Map */}
+      {request.user_latitude && request.user_longitude && !['completed', 'cancelled'].includes(request.status) && (
+        <div className="card mb-6 p-0 overflow-hidden">
+          <LiveMap
+            userLocation={{ lat: parseFloat(request.user_latitude), lng: parseFloat(request.user_longitude) }}
+            style={{ height: 250 }}
+          />
+        </div>
+      )}
 
       {/* Issue Details — Multi-issue */}
       <div className="card mb-6">
