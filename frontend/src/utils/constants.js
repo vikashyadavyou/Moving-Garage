@@ -20,9 +20,10 @@ export const STATUS_LABELS = {
   diagnosed: 'Diagnosed',
   quote_pending: 'Pending User Approval',
   in_progress: 'Repair In Progress',
+  pending_payment: 'Payment Required',
+  pending_cash: 'Pending Cash Collection',
   completed: 'Completed',
   cancelled: 'Cancelled',
-  pending_cash: 'Pending Cash Collection',
 }
 
 export const STATUS_COLORS = {
@@ -33,9 +34,10 @@ export const STATUS_COLORS = {
   diagnosed: 'warning',
   quote_pending: 'warning',
   in_progress: 'primary',
+  pending_payment: 'accent',
+  pending_cash: 'warning',
   completed: 'success',
   cancelled: 'danger',
-  pending_cash: 'warning',
 }
 
 export const DISTANCE_RATE = 15 // ₹15 per km

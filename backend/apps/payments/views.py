@@ -21,9 +21,9 @@ class CreatePaymentOrderView(APIView):
             ServiceRequest, pk=request_id
         )
 
-        if service_request.status != 'completed':
+        if service_request.status != 'pending_payment':
             return Response(
-                {'error': 'Service is not yet completed.'},
+                {'error': 'Service is not yet ready for payment.'},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
@@ -122,6 +122,20 @@ class VerifyPaymentView(APIView):
             payment.status = 'paid'
             payment.paid_at = timezone.now()
             payment.save()
+
+            # Mark the service request as completed after successful payment
+            sr = payment.service_request
+            if sr.status in ('pending_payment',):
+                sr.status = 'completed'
+                sr.completed_at = timezone.now()
+                sr.save()
+
+                # Update mechanic stats
+                if sr.mechanic:
+                    profile = sr.mechanic.mechanic_profile
+                    profile.total_jobs_completed += 1
+                    profile.save(update_fields=['total_jobs_completed'])
+
             return Response({
                 'message': 'Payment verified successfully!',
                 'payment': PaymentSerializer(payment).data,

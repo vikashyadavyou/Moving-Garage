@@ -108,5 +108,5 @@ class DiagnoseOverrideSerializer(serializers.Serializer):
 class StatusUpdateSerializer(serializers.Serializer):
     """Serializer for mechanic status updates."""
     status = serializers.ChoiceField(
-        choices=['en_route', 'arrived', 'in_progress']
+        choices=['en_route', 'arrived', 'in_progress', 'pending_payment']
     )

@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { servicesAPI } from '../../api/services'
+import { createWebSocket } from '../../api/websocket'
 import { STATUS_LABELS } from '../../utils/constants'
 import { formatCurrency, formatDistance, getStatusBadgeClass } from '../../utils/formatters'
 import BackButton from '../../components/BackButton'
@@ -14,10 +15,30 @@ export default function ActiveJob() {
   const [showDiagModal, setShowDiagModal] = useState(false)
   const [issues, setIssues] = useState([])
   const [diagForm, setDiagForm] = useState({ actual_issue_ids: [], notes: '' })
+  const wsRef = useRef(null)
 
   useEffect(() => {
     loadData()
+    connectWebSocket()
+    return () => wsRef.current?.close()
   }, [id])
+
+  const connectWebSocket = () => {
+    wsRef.current = createWebSocket(`ws/request/${id}/`, {
+      status_update: (data) => {
+        setRequest(prev => ({ ...prev, ...data.request, status: data.status }))
+      },
+      cash_payment_pending: (data) => {
+        setRequest(prev => ({ ...prev, ...data.request, status: 'pending_cash' }))
+      },
+      request_completed: (data) => {
+        setRequest(prev => ({ ...prev, ...data.request, status: 'completed' }))
+      },
+      payment_requested: (data) => {
+        setRequest(prev => ({ ...prev, ...data.request, status: 'pending_payment' }))
+      },
+    })
+  }
 
   const loadData = async () => {
     try {
@@ -245,15 +266,32 @@ export default function ActiveJob() {
           </button>
         )}
 
-        {/* Complete */}
+        {/* Request Payment — replaces old "Mark as Completed" */}
         {request.status === 'in_progress' && (
           <button
-            onClick={handleComplete}
+            onClick={() => {
+              if (!confirm('Request payment from the customer? This will send a bill to the user for payment.')) return
+              updateStatus('pending_payment')
+            }}
             disabled={updating}
             className="btn-primary btn-lg w-full bg-emerald-500 hover:bg-emerald-600 shadow-lg"
           >
-            {updating ? <span className="spinner border-white"></span> : '✅ Mark as Completed'}
+            {updating ? <span className="spinner border-white"></span> : '💳 Request Payment'}
           </button>
+        )}
+
+        {/* Pending Payment — Waiting for user to pay */}
+        {request.status === 'pending_payment' && (
+          <div className="p-6 bg-blue-50 rounded-2xl border border-blue-200">
+            <h3 className="text-lg font-bold text-blue-700 mb-2">💳 Payment Requested</h3>
+            <p className="text-sm text-blue-800 mb-2">
+              Waiting for the user to pay <strong>{formatCurrency(request.total_cost)}</strong>.
+            </p>
+            <div className="flex items-center gap-2 text-sm text-blue-600">
+              <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+              Awaiting payment confirmation...
+            </div>
+          </div>
         )}
 
         {/* Pending Cash Collection */}
@@ -268,7 +306,7 @@ export default function ActiveJob() {
               disabled={updating}
               className="btn-primary btn-lg w-full shadow-lg"
             >
-              {updating ? <span className="spinner border-white"></span> : `✅ Confirm Cash Received (${formatCurrency(request.total_cost)})`}
+              {updating ? <span className="spinner border-white"></span> : `✅ Confirm ${formatCurrency(request.total_cost)} Cash Received`}
             </button>
           </div>
         )}

@@ -1,64 +1,48 @@
-# Moving Garage 🔧
+# 🛠️ Moving Garage
 
-> On-demand, real-time 2-wheeler breakdown assistance platform.
+**Moving Garage** is a real-time, on-demand breakdown assistance platform designed specifically for 2-wheeler commuters. Operating on an "Uber-like" model, it instantly connects stranded riders with nearby, verified local mechanics for on-site repairs or towing services.
 
-## Overview
+## 🚀 Features
 
-Moving Garage connects stranded 2-wheeler commuters with local mechanics using an Uber-like model. Features transparent pricing (fixed issue cost + ₹15/km travel fee), real-time tracking, and a dynamic quote adjustment flow.
+### For Commuters (Users)
+* **Real-Time Geolocation:** Auto-fetches current coordinates to pinpoint breakdown locations exactly.
+* **Multi-Issue Selection:** Select primary issues (e.g., Flat Tire, Dead Battery) along with secondary needs like "Pushing to Garage".
+* **Live Tracking:** Track the assigned mechanic's ETA and live location on an interactive map.
+* **Transparent Pricing:** Upfront cost calculation based on fixed service rates and per-km travel fees.
+* **Flexible Payments:** Pay securely online via UPI/Cards or choose "Cash After Repair."
+* **Dynamic Diagnosis Approval:** If the initial issue is unknown, review and approve the mechanic's on-site diagnosis before work begins.
 
-## Tech Stack
+### For Mechanics
+* **Live Job Broadcasting:** Receive real-time alerts for nearby breakdown requests.
+* **Dashboard & Status Management:** Toggle availability and update job statuses in real-time (En Route, Arrived, In Progress, Pending Payment).
+* **On-Site Diagnosis:** Evaluate "Unknown Issues" and submit the actual diagnostic report for user approval.
+* **Cash Confirmation Handshake:** Securely verify and close out jobs when receiving physical cash payments.
 
-| Layer | Technology |
-|-------|-----------|
-| Frontend | React 18 + Vite + TailwindCSS 3 |
-| Backend | Django 5 + Django REST Framework |
-| Real-time | Django Channels (WebSocket) |
-| Database | SQLite (dev) / PostgreSQL (prod) |
-| Payment | Razorpay API |
-| Maps | Google Maps API |
+## 💻 Tech Stack
 
-## Quick Start
+**Frontend:**
+* React.js (Vite)
+* Tailwind CSS (Responsive UI/UX)
+* React Router (Navigation)
+* Mapbox GL JS (Interactive Maps)
 
-### Backend
-```bash
-cd backend
-pip install -r requirements.txt
-python manage.py makemigrations accounts services payments
-python manage.py migrate
-python manage.py seed_issues
-python manage.py createsuperuser
-python manage.py runserver
-```
+**Backend:**
+* Python 3
+* Django & Django REST Framework (DRF)
+* Django Channels & Redis (WebSockets for real-time features)
+* SQLite (Development Database)
 
-### Frontend
-```bash
-cd frontend
-npm install
-npm run dev
-```
+**Third-Party Integrations:**
+* **Mapbox API:** Geocoding, routing, and real-time map rendering.
+* **Razorpay API:** Secure online payment processing and checkout routing.
 
-## Pricing
+## 🔄 System Workflow
 
-| Issue | Fixed Cost |
-|-------|-----------|
-| Flat Tire / Puncture Repair | ₹150 |
-| Dead Battery / Jump Start | ₹200 |
-| Broken Clutch / Brake Cable | ₹250 |
-| Spark Plug Issue | ₹120 |
-| Engine Overheating / Oil Issue | ₹300 |
-| Towing to Garage | ₹500 |
-| Unknown Issue (Diagnostic) | ₹100 |
-
-**Formula:** Total = Issue Cost + (Distance in KM × ₹15)
-
-## API Endpoints
-
-- `POST /api/v1/auth/register/` — Register
-- `POST /api/v1/auth/login/` — Login (JWT)
-- `GET /api/v1/issues/` — List issues & pricing
-- `POST /api/v1/requests/` — Create service request
-- `PATCH /api/v1/requests/{id}/accept/` — Mechanic accepts
-- `PATCH /api/v1/requests/{id}/diagnose/` — Override diagnosis
-- `POST /api/v1/requests/{id}/approve-quote/` — User approves
-- `POST /api/v1/requests/{id}/complete/` — Mark completed
-- WebSocket: `ws/requests/` and `ws/request/{id}/`
+1. **Request Initiation:** A commuter's 2-wheeler breaks down. They open the app, select their vehicle issue(s), and broadcast their live location.
+2. **Mechanic Matching:** The backend calculates distances and pings available mechanics within the radius via WebSockets.
+3. **Acceptance & Transit:** A mechanic accepts the job and navigates to the commuter's location using integrated routing.
+4. **Diagnosis & Repair:** * If the issue is known, the mechanic begins repairs.
+   * If unknown, the mechanic assesses the vehicle, updates the diagnosis via the app, and waits for the commuter's digital approval and price recalculation.
+5. **Checkout & Payment:** Once marked "Pending Payment" by the mechanic, the commuter is prompted to pay.
+   * **Online:** Commuter pays via Razorpay; job auto-completes.
+   * **Cash:** Commuter selects cash; mechanic verifies receipt on their dashboard to complete the job.
