@@ -52,12 +52,14 @@ export default function Navbar() {
     { path: '/user/dashboard', label: 'Dashboard', icon: '🏠' },
     { path: '/user/new-request', label: 'Get Help', icon: '🆘' },
     { path: '/user/history', label: 'History', icon: '📋' },
+    { path: '/profile', label: 'Profile', icon: '👤' },
   ]
 
   const mechanicLinks = [
     { path: '/mechanic/dashboard', label: 'Dashboard', icon: '🏠' },
     { path: '/mechanic/requests', label: 'Requests', icon: '📡', badge: pendingCount },
     { path: '/mechanic/history', label: 'History', icon: '📋' },
+    { path: '/profile', label: 'Profile', icon: '👤' },
   ]
 
   const links = user?.role === 'mechanic' ? mechanicLinks : userLinks
@@ -107,7 +109,7 @@ export default function Navbar() {
           <div className="flex items-center gap-3">
             {user ? (
               <>
-                <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-slate-50 rounded-xl">
+                <Link to="/profile" className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors">
                   <div className="w-7 h-7 bg-gradient-to-br from-primary-400 to-primary-600 rounded-lg flex items-center justify-center">
                     <span className="text-white text-xs font-bold">
                       {(user.first_name || user.username)[0].toUpperCase()}
@@ -119,7 +121,7 @@ export default function Navbar() {
                     </div>
                     <div className="text-xs text-slate-500 capitalize">{user.role}</div>
                   </div>
-                </div>
+                </Link>
                 <button
                   onClick={handleLogout}
                   className="btn-ghost btn-sm text-slate-500 hover:text-red-500"

@@ -6,6 +6,7 @@ import { createWebSocket } from '../../api/websocket'
 import { STATUS_LABELS } from '../../utils/constants'
 import { formatCurrency, formatDistance, getStatusBadgeClass } from '../../utils/formatters'
 import BackButton from '../../components/BackButton'
+import LiveMap from '../../components/LiveMap'
 
 const STATUS_STEPS = ['pending', 'accepted', 'en_route', 'arrived', 'in_progress', 'pending_payment', 'completed']
 
@@ -17,6 +18,7 @@ export default function TrackMechanic() {
   const [showQuoteModal, setShowQuoteModal] = useState(false)
   const [approving, setApproving] = useState(false)
   const [payingMethod, setPayingMethod] = useState(null)
+  const [mechanicGps, setMechanicGps] = useState(null)
   const wsRef = useRef(null)
 
   useEffect(() => {
@@ -62,6 +64,9 @@ export default function TrackMechanic() {
         setRequest(prev => ({ ...prev, ...data.request, status: 'completed' }))
       },
       mechanic_location: (data) => {
+        if (data.latitude && data.longitude) {
+          setMechanicGps({ lat: data.latitude, lng: data.longitude })
+        }
         if (data.eta_minutes) {
           setRequest(prev => ({ ...prev, estimated_arrival_minutes: data.eta_minutes }))
         }
@@ -199,6 +204,17 @@ export default function TrackMechanic() {
             </div>
             <div className="text-6xl animate-bounce-gentle">🏍️</div>
           </div>
+        </div>
+      )}
+
+      {/* Live Map */}
+      {request.user_latitude && request.user_longitude && ['accepted', 'en_route', 'arrived', 'in_progress'].includes(request.status) && (
+        <div className="card mb-6 p-0 overflow-hidden">
+          <LiveMap
+            userLocation={{ lat: parseFloat(request.user_latitude), lng: parseFloat(request.user_longitude) }}
+            mechanicLocation={mechanicGps}
+            style={{ height: 280 }}
+          />
         </div>
       )}
 
