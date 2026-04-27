@@ -105,14 +105,51 @@ export default function TrackMechanic() {
         setRequest(prev => ({ ...prev, status: 'pending_cash', payment_method: 'CASH' }))
         return
       }
-      // Mock payment success for demo
-      const verifyRes = await paymentsAPI.verifyPayment({
-        razorpay_payment_id: `pay_mock_${Date.now()}`,
-        razorpay_order_id: res.data.order_id,
-        razorpay_signature: `sig_mock_${Date.now()}`,
-      })
-      // Online payment verified → backend marks job as completed
-      setRequest(prev => ({ ...prev, status: 'completed', payment_status: 'paid' }))
+      // --- DELETE THE MOCK CODE AND PASTE THIS ---
+      
+      // 1. Configure the Razorpay popup
+      const options = {
+        key: import.meta.env.VITE_PAYMENT_GATEWAY_KEY,
+        amount: res.data.amount, // The amount sent back from your Django order creation
+        currency: "INR",
+        name: "Moving Garage",
+        description: "Breakdown Assistance Payment",
+        order_id: res.data.order_id, // The real order ID from Django
+        
+        // 2. This handler ONLY runs if the user successfully pays in the popup
+        handler: async function (response) {
+          try {
+            // Send the REAL security signatures to Django for verification
+            await paymentsAPI.verifyPayment({
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_signature: response.razorpay_signature,
+              request_id: id 
+            });
+            
+            // If verification succeeds, update the UI to completed!
+            setRequest(prev => ({ ...prev, status: 'completed', payment_status: 'paid' }));
+            
+          } catch (verifyErr) {
+            console.error("Verification error:", verifyErr);
+            alert("Payment failed verification. Please contact support.");
+          }
+        },
+        theme: {
+          color: "#2563eb" // Tailwind blue-600 to match your app
+        }
+      };
+
+      // 3. Open the actual popup window
+      const rzp = new window.Razorpay(options);
+      
+      rzp.on('payment.failed', function (response){
+          alert("Payment failed or was cancelled. Please try again.");
+      });
+      
+      rzp.open();
+      
+      // --- END OF NEW CODE ---
     } catch (err) {
       alert('Payment failed. Please try again.')
     } finally {
@@ -255,15 +292,26 @@ export default function TrackMechanic() {
             </>
           )}
 
-          <div className="flex justify-between">
-            <span className="text-slate-600">
-              Travel Fee ({request.distance_km ? formatDistance(request.distance_km) : '—'} × ₹15/km)
-            </span>
-            <span className="font-semibold">{formatCurrency(request.distance_cost)}</span>
-          </div>
+          {request.mechanic ? (
+            <div className="flex justify-between">
+                <span className="text-slate-600">
+                    Travel Fee ({request.distance_km ? formatDistance(request.distance_km) : '0 km'} x ₹15/km)
+                </span>
+                <span className="font-semibold">{formatCurrency(request.distance_cost)}</span>
+            </div>
+) : (
+            <div className="flex justify-between">
+                <span className="text-slate-400 italic text-sm">
+                    Travel Fee (Calculated after mechanic accepts)
+                </span>
+                <span className="font-semibold text-slate-400">--</span>
+            </div>
+)}
           <div className="border-t border-border pt-3 flex justify-between items-center">
             <span className="font-bold text-slate-900 text-base">Total</span>
-            <span className="font-bold text-primary-600 text-2xl">{formatCurrency(request.total_cost)}</span>
+           <span className="font-bold text-primary-600 text-2xl">
+              {formatCurrency(request.mechanic ? request.total_cost : (request.total_cost - (request.distance_cost || 0)))}
+          </span>
           </div>
         </div>
       </div>

@@ -121,13 +121,11 @@ export default function IncomingRequests() {
                   <div className="text-right">
                     <div className="text-xs text-slate-500">Est. Earning</div>
                     <div className="text-2xl font-bold text-primary-600">
-                      {formatCurrency(req.total_cost)}
+                      {formatCurrency(req.total_cost - (req.distance_cost || 0))}
+                  </div>
+                    <div className="text-xs text-emerald-600 font-medium bg-emerald-50 px-2 py-1 rounded inline-block mt-1">
+                        Route calculated on acceptance
                     </div>
-                    {req.distance_km && (
-                      <div className="text-xs text-slate-400">
-                        ~{formatDistance(req.distance_km)} away
-                      </div>
-                    )}
                   </div>
                   <button
                     onClick={() => handleAccept(req.id)}
