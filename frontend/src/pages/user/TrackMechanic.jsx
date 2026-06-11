@@ -106,7 +106,7 @@ export default function TrackMechanic() {
         return
       }
       // --- DELETE THE MOCK CODE AND PASTE THIS ---
-      
+
       // 1. Configure the Razorpay popup
       const options = {
         key: import.meta.env.VITE_PAYMENT_GATEWAY_KEY,
@@ -115,7 +115,7 @@ export default function TrackMechanic() {
         name: "Moving Garage",
         description: "Breakdown Assistance Payment",
         order_id: res.data.order_id, // The real order ID from Django
-        
+
         // 2. This handler ONLY runs if the user successfully pays in the popup
         handler: async function (response) {
           try {
@@ -124,12 +124,12 @@ export default function TrackMechanic() {
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_order_id: response.razorpay_order_id,
               razorpay_signature: response.razorpay_signature,
-              request_id: id 
+              request_id: id
             });
-            
+
             // If verification succeeds, update the UI to completed!
             setRequest(prev => ({ ...prev, status: 'completed', payment_status: 'paid' }));
-            
+
           } catch (verifyErr) {
             console.error("Verification error:", verifyErr);
             alert("Payment failed verification. Please contact support.");
@@ -142,13 +142,13 @@ export default function TrackMechanic() {
 
       // 3. Open the actual popup window
       const rzp = new window.Razorpay(options);
-      
-      rzp.on('payment.failed', function (response){
-          alert("Payment failed or was cancelled. Please try again.");
+
+      rzp.on('payment.failed', function (response) {
+        alert("Payment failed or was cancelled. Please try again.");
       });
-      
+
       rzp.open();
-      
+
       // --- END OF NEW CODE ---
     } catch (err) {
       alert('Payment failed. Please try again.')
@@ -205,17 +205,15 @@ export default function TrackMechanic() {
             const isCurrent = i === currentStepIndex
             return (
               <div key={step} className="flex flex-col items-center flex-1">
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold mb-2 transition-all duration-500 ${
-                  isCompleted ? 'bg-emerald-500 text-white' :
-                  isCurrent ? 'bg-primary-500 text-white shadow-lg shadow-primary-200 animate-pulse' :
-                  'bg-slate-200 text-slate-400'
-                }`}>
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold mb-2 transition-all duration-500 ${isCompleted ? 'bg-emerald-500 text-white' :
+                    isCurrent ? 'bg-primary-500 text-white shadow-lg shadow-primary-200 animate-pulse' :
+                      'bg-slate-200 text-slate-400'
+                  }`}>
                   {isCompleted ? '✓' : i + 1}
                 </div>
-                <span className={`text-xs text-center leading-tight ${
-                  isCurrent ? 'font-semibold text-primary-700' :
-                  isCompleted ? 'text-emerald-600' : 'text-slate-400'
-                }`}>
+                <span className={`text-xs text-center leading-tight ${isCurrent ? 'font-semibold text-primary-700' :
+                    isCompleted ? 'text-emerald-600' : 'text-slate-400'
+                  }`}>
                   {STATUS_LABELS[step]?.split(' ').slice(0, 2).join(' ')}
                 </span>
               </div>
@@ -224,7 +222,7 @@ export default function TrackMechanic() {
         </div>
         {/* Progress bar */}
         <div className="mt-4 h-1.5 bg-slate-100 rounded-full overflow-hidden">
-          <div 
+          <div
             className="h-full bg-gradient-to-r from-primary-500 to-emerald-500 rounded-full transition-all duration-1000"
             style={{ width: `${Math.max((currentStepIndex / (STATUS_STEPS.length - 1)) * 100, 5)}%` }}
           ></div>
@@ -294,24 +292,24 @@ export default function TrackMechanic() {
 
           {request.mechanic ? (
             <div className="flex justify-between">
-                <span className="text-slate-600">
-                    Travel Fee ({request.distance_km ? formatDistance(request.distance_km) : '0 km'} x ₹15/km)
-                </span>
-                <span className="font-semibold">{formatCurrency(request.distance_cost)}</span>
+              <span className="text-slate-600">
+                Travel Fee ({request.distance_km ? formatDistance(request.distance_km) : '0 km'} x ₹15/km)
+              </span>
+              <span className="font-semibold">{formatCurrency(request.distance_cost)}</span>
             </div>
-) : (
+          ) : (
             <div className="flex justify-between">
-                <span className="text-slate-400 italic text-sm">
-                    Travel Fee (Calculated after mechanic accepts)
-                </span>
-                <span className="font-semibold text-slate-400">--</span>
+              <span className="text-slate-400 italic text-sm">
+                Travel Fee (Calculated after mechanic accepts)
+              </span>
+              <span className="font-semibold text-slate-400">--</span>
             </div>
-)}
+          )}
           <div className="border-t border-border pt-3 flex justify-between items-center">
             <span className="font-bold text-slate-900 text-base">Total</span>
-           <span className="font-bold text-primary-600 text-2xl">
+            <span className="font-bold text-primary-600 text-2xl">
               {formatCurrency(request.mechanic ? request.total_cost : (request.total_cost - (request.distance_cost || 0)))}
-          </span>
+            </span>
           </div>
         </div>
       </div>
@@ -364,23 +362,23 @@ export default function TrackMechanic() {
           </div>
         )}
         {request.status === 'pending_cash' && (
-           <div className="w-full p-4 bg-amber-50 rounded-xl text-center text-amber-700 shadow-sm border border-amber-200">
-              <div className="font-semibold mb-1">⏳ Waiting for Cash Confirmation</div>
-              <div className="text-sm">Please pay <span className="font-bold">{formatCurrency(request.total_cost)}</span> in cash to the mechanic.</div>
-           </div>
+          <div className="w-full p-4 bg-amber-50 rounded-xl text-center text-amber-700 shadow-sm border border-amber-200">
+            <div className="font-semibold mb-1">⏳ Waiting for Cash Confirmation</div>
+            <div className="text-sm">Please pay <span className="font-bold">{formatCurrency(request.total_cost)}</span> in cash to the mechanic.</div>
+          </div>
         )}
         {request.payment_status === 'paid' && (
-           <div className="w-full p-4 bg-emerald-50 rounded-xl text-center text-emerald-700 shadow-sm border border-emerald-200 flex flex-col justify-center items-center">
-              <div className="font-semibold mb-2">✅ Payment Successful!</div>
-              <button onClick={() => navigate('/user/dashboard')} className="btn-primary text-sm px-6">Back to Dashboard</button>
-           </div>
+          <div className="w-full p-4 bg-emerald-50 rounded-xl text-center text-emerald-700 shadow-sm border border-emerald-200 flex flex-col justify-center items-center">
+            <div className="font-semibold mb-2">✅ Payment Successful!</div>
+            <button onClick={() => navigate('/user/dashboard')} className="btn-primary text-sm px-6">Back to Dashboard</button>
+          </div>
         )}
         {request.status === 'completed' && request.payment_status !== 'paid' && (
-           <div className="w-full p-4 bg-emerald-50 rounded-xl text-center text-emerald-700 shadow-sm border border-emerald-200 flex flex-col justify-center items-center">
-              <div className="text-4xl mb-2">🎉</div>
-              <div className="font-semibold mb-2">Service Completed!</div>
-              <button onClick={() => navigate('/user/dashboard')} className="btn-primary text-sm px-6">Back to Dashboard</button>
-           </div>
+          <div className="w-full p-4 bg-emerald-50 rounded-xl text-center text-emerald-700 shadow-sm border border-emerald-200 flex flex-col justify-center items-center">
+            <div className="text-4xl mb-2">🎉</div>
+            <div className="font-semibold mb-2">Service Completed!</div>
+            <button onClick={() => navigate('/user/dashboard')} className="btn-primary text-sm px-6">Back to Dashboard</button>
+          </div>
         )}
         {/* Cancel button — hidden during payment stages */}
         {!['completed', 'cancelled', 'pending_cash', 'pending_payment'].includes(request.status) && request.payment_status !== 'paid' && (

@@ -7,7 +7,7 @@ from django.utils import timezone
 from .models import Payment
 from .serializers import PaymentSerializer, PaymentVerifySerializer
 from .razorpay_client import get_razorpay_client
-from apps.services.models import ServiceRequest
+from ..services.models import ServiceRequest
 
 
 class CreatePaymentOrderView(APIView):

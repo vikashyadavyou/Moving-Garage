@@ -1,5 +1,5 @@
 from django.db import models
-from apps.services.models import ServiceRequest
+from ..services.models import ServiceRequest
 
 
 class Payment(models.Model):

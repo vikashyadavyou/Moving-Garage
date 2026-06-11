@@ -7,4 +7,4 @@ class ServicesConfig(AppConfig):
     verbose_name = 'Services'
 
     def ready(self):
-        import apps.services.signals  # noqa
+        from . import signals  # noqa

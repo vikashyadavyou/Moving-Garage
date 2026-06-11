@@ -1,0 +1,2220 @@
+[
+{
+  "model": "auth.permission",
+  "pk": 1,
+  "fields": {
+    "name": "Can add log entry",
+    "content_type": 1,
+    "codename": "add_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 2,
+  "fields": {
+    "name": "Can change log entry",
+    "content_type": 1,
+    "codename": "change_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 3,
+  "fields": {
+    "name": "Can delete log entry",
+    "content_type": 1,
+    "codename": "delete_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 4,
+  "fields": {
+    "name": "Can view log entry",
+    "content_type": 1,
+    "codename": "view_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 5,
+  "fields": {
+    "name": "Can add permission",
+    "content_type": 2,
+    "codename": "add_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 6,
+  "fields": {
+    "name": "Can change permission",
+    "content_type": 2,
+    "codename": "change_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 7,
+  "fields": {
+    "name": "Can delete permission",
+    "content_type": 2,
+    "codename": "delete_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 8,
+  "fields": {
+    "name": "Can view permission",
+    "content_type": 2,
+    "codename": "view_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 9,
+  "fields": {
+    "name": "Can add group",
+    "content_type": 3,
+    "codename": "add_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 10,
+  "fields": {
+    "name": "Can change group",
+    "content_type": 3,
+    "codename": "change_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 11,
+  "fields": {
+    "name": "Can delete group",
+    "content_type": 3,
+    "codename": "delete_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 12,
+  "fields": {
+    "name": "Can view group",
+    "content_type": 3,
+    "codename": "view_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 13,
+  "fields": {
+    "name": "Can add content type",
+    "content_type": 4,
+    "codename": "add_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 14,
+  "fields": {
+    "name": "Can change content type",
+    "content_type": 4,
+    "codename": "change_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 15,
+  "fields": {
+    "name": "Can delete content type",
+    "content_type": 4,
+    "codename": "delete_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 16,
+  "fields": {
+    "name": "Can view content type",
+    "content_type": 4,
+    "codename": "view_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 17,
+  "fields": {
+    "name": "Can add session",
+    "content_type": 5,
+    "codename": "add_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 18,
+  "fields": {
+    "name": "Can change session",
+    "content_type": 5,
+    "codename": "change_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 19,
+  "fields": {
+    "name": "Can delete session",
+    "content_type": 5,
+    "codename": "delete_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 20,
+  "fields": {
+    "name": "Can view session",
+    "content_type": 5,
+    "codename": "view_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 21,
+  "fields": {
+    "name": "Can add user",
+    "content_type": 6,
+    "codename": "add_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 22,
+  "fields": {
+    "name": "Can change user",
+    "content_type": 6,
+    "codename": "change_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 23,
+  "fields": {
+    "name": "Can delete user",
+    "content_type": 6,
+    "codename": "delete_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 24,
+  "fields": {
+    "name": "Can view user",
+    "content_type": 6,
+    "codename": "view_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 25,
+  "fields": {
+    "name": "Can add mechanic profile",
+    "content_type": 7,
+    "codename": "add_mechanicprofile"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 26,
+  "fields": {
+    "name": "Can change mechanic profile",
+    "content_type": 7,
+    "codename": "change_mechanicprofile"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 27,
+  "fields": {
+    "name": "Can delete mechanic profile",
+    "content_type": 7,
+    "codename": "delete_mechanicprofile"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 28,
+  "fields": {
+    "name": "Can view mechanic profile",
+    "content_type": 7,
+    "codename": "view_mechanicprofile"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 29,
+  "fields": {
+    "name": "Can add issue catalog",
+    "content_type": 8,
+    "codename": "add_issuecatalog"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 30,
+  "fields": {
+    "name": "Can change issue catalog",
+    "content_type": 8,
+    "codename": "change_issuecatalog"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 31,
+  "fields": {
+    "name": "Can delete issue catalog",
+    "content_type": 8,
+    "codename": "delete_issuecatalog"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 32,
+  "fields": {
+    "name": "Can view issue catalog",
+    "content_type": 8,
+    "codename": "view_issuecatalog"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 33,
+  "fields": {
+    "name": "Can add service request",
+    "content_type": 9,
+    "codename": "add_servicerequest"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 34,
+  "fields": {
+    "name": "Can change service request",
+    "content_type": 9,
+    "codename": "change_servicerequest"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 35,
+  "fields": {
+    "name": "Can delete service request",
+    "content_type": 9,
+    "codename": "delete_servicerequest"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 36,
+  "fields": {
+    "name": "Can view service request",
+    "content_type": 9,
+    "codename": "view_servicerequest"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 37,
+  "fields": {
+    "name": "Can add payment",
+    "content_type": 10,
+    "codename": "add_payment"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 38,
+  "fields": {
+    "name": "Can change payment",
+    "content_type": 10,
+    "codename": "change_payment"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 39,
+  "fields": {
+    "name": "Can delete payment",
+    "content_type": 10,
+    "codename": "delete_payment"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 40,
+  "fields": {
+    "name": "Can view payment",
+    "content_type": 10,
+    "codename": "view_payment"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 1,
+  "fields": {
+    "app_label": "admin",
+    "model": "logentry"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 2,
+  "fields": {
+    "app_label": "auth",
+    "model": "permission"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 3,
+  "fields": {
+    "app_label": "auth",
+    "model": "group"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 4,
+  "fields": {
+    "app_label": "contenttypes",
+    "model": "contenttype"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 5,
+  "fields": {
+    "app_label": "sessions",
+    "model": "session"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 6,
+  "fields": {
+    "app_label": "accounts",
+    "model": "user"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 7,
+  "fields": {
+    "app_label": "accounts",
+    "model": "mechanicprofile"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 8,
+  "fields": {
+    "app_label": "services",
+    "model": "issuecatalog"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 9,
+  "fields": {
+    "app_label": "services",
+    "model": "servicerequest"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 10,
+  "fields": {
+    "app_label": "payments",
+    "model": "payment"
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$H9QMyBHe2ZN56DVFz3pqAe$v9BV5M/8yEwQI1Z0aBygyAxSWy53Umo8/beusg/NXzQ=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vikashyadav",
+    "first_name": "Yadav",
+    "last_name": "Vikash",
+    "email": "yadavvikash010101@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-04-25T08:27:46.792Z",
+    "role": "user",
+    "phone": "9408376531",
+    "avatar": "https://i.pinimg.com/736x/3c/ac/23/3cac238d735ec8b3ac2de2f07b133da2.jpg",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$fieDXwPQ82NtzJVZiwqyDq$yO4gtEkzdpfcIFRjrZmtfRgioic0TzuDPzDculyzg/o=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "garage",
+    "first_name": "navin",
+    "last_name": "garage",
+    "email": "yadavvikash@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-04-25T08:31:07.074Z",
+    "role": "mechanic",
+    "phone": "9408376531",
+    "avatar": "https://i.pinimg.com/736x/3c/ac/23/3cac238d735ec8b3ac2de2f07b133da2.jpg",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$KWty8dXGAywKK0dVTO5LBC$oH7HymC6YoyqN5ntpOeBWqRW2uJ+e40H1WAD7NPzAm8=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vikash",
+    "first_name": "Vikash",
+    "last_name": "Yadav",
+    "email": "vikash@test.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-04-25T12:47:19.137Z",
+    "role": "user",
+    "phone": "+91 9876543210",
+    "avatar": "",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$zA9VYjo761eEWozHjsvjOZ$L2tfIyrtmzmaSoGLe1+BkL/C7SKwCTOUxECMg6SYjRw=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "raju",
+    "first_name": "Raju",
+    "last_name": "Kumar",
+    "email": "raju@test.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-04-25T12:52:33.970Z",
+    "role": "mechanic",
+    "phone": "+91 9988776655",
+    "avatar": "",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 5,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$7p8knH4D7bgLxuaFioDcHj$TlQGc05bKcYwjZS3dT+440v6vsCcp2dUrOJF+NX1PUk=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "manthan110",
+    "first_name": "Manthan",
+    "last_name": "Upadhyay",
+    "email": "manthandupadhyay@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-04-26T09:35:42.389Z",
+    "role": "user",
+    "phone": "+91 7043406506",
+    "avatar": "",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 6,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$WndMfPR2eFqwvAhIIeyEJJ$Nt7Z+YTY12xw655rO0jSYoZYKqGWcLQ+9tGGHdEre34=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "kushal2304",
+    "first_name": "Kushal",
+    "last_name": "Upadhyay",
+    "email": "kushaldupadhyay@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-04-26T09:41:10.940Z",
+    "role": "mechanic",
+    "phone": "+91 91575 88433",
+    "avatar": "",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 7,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$XIwijnzM1llfBNsUkgyd8t$y3pSjcAvWrsyGEb4L9cZF0RIAU/F7dlL/nlnwaP6Zik=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "jayesh110",
+    "first_name": "Jayesh",
+    "last_name": "Oswal",
+    "email": "websitekushal234@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-04-27T07:34:06.664Z",
+    "role": "user",
+    "phone": "+91 7573911170",
+    "avatar": "",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 8,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$7R76dLpDt6xzjvrdXRkCr0$8qF75f4ULz4ixOrm0GpeCeun4U+tFEs/rrZ6liZ6zXI=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "khush1409",
+    "first_name": "Khush",
+    "last_name": "Purohit",
+    "email": "kushalgaming2303@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-04-27T07:35:41.419Z",
+    "role": "mechanic",
+    "phone": "+91 93164 41027",
+    "avatar": "",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.mechanicprofile",
+  "pk": 1,
+  "fields": {
+    "user": 2,
+    "is_available": true,
+    "current_latitude": "23.0172166",
+    "current_longitude": "72.6926187",
+    "rating": "5.00",
+    "total_jobs_completed": 12,
+    "specializations": [],
+    "experience_years": 0,
+    "bio": ""
+  }
+},
+{
+  "model": "accounts.mechanicprofile",
+  "pk": 2,
+  "fields": {
+    "user": 4,
+    "is_available": true,
+    "current_latitude": null,
+    "current_longitude": null,
+    "rating": "5.00",
+    "total_jobs_completed": 0,
+    "specializations": [],
+    "experience_years": 0,
+    "bio": ""
+  }
+},
+{
+  "model": "accounts.mechanicprofile",
+  "pk": 3,
+  "fields": {
+    "user": 6,
+    "is_available": true,
+    "current_latitude": null,
+    "current_longitude": null,
+    "rating": "5.00",
+    "total_jobs_completed": 5,
+    "specializations": [],
+    "experience_years": 0,
+    "bio": ""
+  }
+},
+{
+  "model": "accounts.mechanicprofile",
+  "pk": 4,
+  "fields": {
+    "user": 8,
+    "is_available": true,
+    "current_latitude": "22.9976511",
+    "current_longitude": "72.5520755",
+    "rating": "5.00",
+    "total_jobs_completed": 4,
+    "specializations": [],
+    "experience_years": 0,
+    "bio": ""
+  }
+},
+{
+  "model": "services.issuecatalog",
+  "pk": 1,
+  "fields": {
+    "slug": "flat-tire",
+    "name": "Flat Tire / Puncture Repair",
+    "fixed_cost": "150.00",
+    "description": "Puncture repair or tube replacement for 2-wheeler tires.",
+    "icon": "🔧",
+    "is_active": true,
+    "sort_order": 1
+  }
+},
+{
+  "model": "services.issuecatalog",
+  "pk": 2,
+  "fields": {
+    "slug": "dead-battery",
+    "name": "Dead Battery / Jump Start",
+    "fixed_cost": "200.00",
+    "description": "Battery jump start or quick battery replacement.",
+    "icon": "🔋",
+    "is_active": true,
+    "sort_order": 2
+  }
+},
+{
+  "model": "services.issuecatalog",
+  "pk": 3,
+  "fields": {
+    "slug": "clutch-brake-cable",
+    "name": "Broken Clutch / Brake Cable Replacement",
+    "fixed_cost": "250.00",
+    "description": "Clutch wire or brake cable replacement on-site.",
+    "icon": "⚙️",
+    "is_active": true,
+    "sort_order": 3
+  }
+},
+{
+  "model": "services.issuecatalog",
+  "pk": 4,
+  "fields": {
+    "slug": "spark-plug",
+    "name": "Spark Plug Issue",
+    "fixed_cost": "120.00",
+    "description": "Spark plug cleaning or replacement.",
+    "icon": "⚡",
+    "is_active": true,
+    "sort_order": 4
+  }
+},
+{
+  "model": "services.issuecatalog",
+  "pk": 5,
+  "fields": {
+    "slug": "engine-overheating",
+    "name": "Engine Overheating / Oil Issue",
+    "fixed_cost": "300.00",
+    "description": "Engine coolant top-up, oil change, or overheating fix.",
+    "icon": "🌡️",
+    "is_active": true,
+    "sort_order": 5
+  }
+},
+{
+  "model": "services.issuecatalog",
+  "pk": 6,
+  "fields": {
+    "slug": "towing",
+    "name": "Towing to Garage",
+    "fixed_cost": "500.00",
+    "description": "Tow the vehicle to the nearest authorized garage.",
+    "icon": "🚛",
+    "is_active": false,
+    "sort_order": 6
+  }
+},
+{
+  "model": "services.issuecatalog",
+  "pk": 7,
+  "fields": {
+    "slug": "unknown-issue",
+    "name": "Unknown Issue (Diagnostic Fee)",
+    "fixed_cost": "25.00",
+    "description": "On-site diagnostic inspection. Fee is replaced by repair cost if a specific repair is needed.",
+    "icon": "🔍",
+    "is_active": true,
+    "sort_order": 7
+  }
+},
+{
+  "model": "services.issuecatalog",
+  "pk": 8,
+  "fields": {
+    "slug": "pushing-to-garage",
+    "name": "Pushing to Garage",
+    "fixed_cost": "25.00",
+    "description": "Push the vehicle to the nearest authorized garage.",
+    "icon": "🏍️",
+    "is_active": true,
+    "sort_order": 6
+  }
+},
+{
+  "model": "services.issuecatalog",
+  "pk": 9,
+  "fields": {
+    "slug": "broken-drive-chain",
+    "name": "Broken Drive Chain",
+    "fixed_cost": "150.00",
+    "description": "Drive chain repair or replacement for 2-wheelers.",
+    "icon": "⛓️",
+    "is_active": true,
+    "sort_order": 8
+  }
+},
+{
+  "model": "services.issuecatalog",
+  "pk": 10,
+  "fields": {
+    "slug": "headlight-taillight",
+    "name": "Headlight/Taillight Bulb Replacement",
+    "fixed_cost": "80.00",
+    "description": "Headlight or taillight bulb replacement on-site.",
+    "icon": "💡",
+    "is_active": true,
+    "sort_order": 9
+  }
+},
+{
+  "model": "services.issuecatalog",
+  "pk": 11,
+  "fields": {
+    "slug": "engine-oil-leak",
+    "name": "Engine Oil Leak",
+    "fixed_cost": "200.00",
+    "description": "Diagnose and fix engine oil leakage.",
+    "icon": "🛢️",
+    "is_active": true,
+    "sort_order": 10
+  }
+},
+{
+  "model": "services.servicerequest",
+  "pk": 1,
+  "fields": {
+    "user": 1,
+    "mechanic": null,
+    "vehicle_make": "Honda",
+    "vehicle_model": "activa 5g",
+    "vehicle_year": null,
+    "reported_issue": 1,
+    "actual_issue": null,
+    "issue_was_overridden": false,
+    "user_approved_override": false,
+    "override_notes": "",
+    "user_latitude": "23.0172523",
+    "user_longitude": "72.6925994",
+    "user_address": "",
+    "distance_km": "5.00",
+    "distance_cost": "75.00",
+    "issue_cost": "150.00",
+    "total_cost": "225.00",
+    "status": "cancelled",
+    "created_at": "2026-04-25T08:28:57.454Z",
+    "updated_at": "2026-04-25T08:32:17.872Z",
+    "accepted_at": null,
+    "completed_at": null,
+    "cancelled_at": "2026-04-25T08:32:17.872Z",
+    "estimated_arrival_minutes": null,
+    "reported_issues": [],
+    "actual_issues": []
+  }
+},
+{
+  "model": "services.servicerequest",
+  "pk": 2,
+  "fields": {
+    "user": 1,
+    "mechanic": 2,
+    "vehicle_make": "Hero",
+    "vehicle_model": "activa 5g",
+    "vehicle_year": 2010,
+    "reported_issue": 1,
+    "actual_issue": null,
+    "issue_was_overridden": false,
+    "user_approved_override": false,
+    "override_notes": "",
+    "user_latitude": "23.0172616",
+    "user_longitude": "72.6926028",
+    "user_address": "",
+    "distance_km": "0.00",
+    "distance_cost": "0.00",
+    "issue_cost": "150.00",
+    "total_cost": "150.00",
+    "status": "completed",
+    "created_at": "2026-04-25T08:32:45.438Z",
+    "updated_at": "2026-04-25T08:33:14.148Z",
+    "accepted_at": "2026-04-25T08:32:56.622Z",
+    "completed_at": "2026-04-25T08:33:14.148Z",
+    "cancelled_at": null,
+    "estimated_arrival_minutes": 5,
+    "reported_issues": [],
+    "actual_issues": []
+  }
+},
+{
+  "model": "services.servicerequest",
+  "pk": 3,
+  "fields": {
+    "user": 3,
+    "mechanic": 4,
+    "vehicle_make": "Honda",
+    "vehicle_model": "Activa 6G",
+    "vehicle_year": 2023,
+    "reported_issue": 1,
+    "actual_issue": 2,
+    "issue_was_overridden": true,
+    "user_approved_override": true,
+    "override_notes": "Battery issue found after inspection",
+    "user_latitude": "23.0173286",
+    "user_longitude": "72.6926043",
+    "user_address": "Near City Mall, MG Road",
+    "distance_km": "5.00",
+    "distance_cost": "75.00",
+    "issue_cost": "200.00",
+    "total_cost": "275.00",
+    "status": "in_progress",
+    "created_at": "2026-04-25T12:50:57.842Z",
+    "updated_at": "2026-04-25T12:57:50.240Z",
+    "accepted_at": "2026-04-25T12:54:49.444Z",
+    "completed_at": null,
+    "cancelled_at": null,
+    "estimated_arrival_minutes": 15,
+    "reported_issues": [],
+    "actual_issues": []
+  }
+},
+{
+  "model": "services.servicerequest",
+  "pk": 4,
+  "fields": {
+    "user": 1,
+    "mechanic": 2,
+    "vehicle_make": "Honda",
+    "vehicle_model": "hu",
+    "vehicle_year": 2022,
+    "reported_issue": 7,
+    "actual_issue": null,
+    "issue_was_overridden": false,
+    "user_approved_override": false,
+    "override_notes": "",
+    "user_latitude": "23.0173038",
+    "user_longitude": "72.6925762",
+    "user_address": "",
+    "distance_km": "0.00",
+    "distance_cost": "0.00",
+    "issue_cost": "100.00",
+    "total_cost": "100.00",
+    "status": "completed",
+    "created_at": "2026-04-26T08:39:01.978Z",
+    "updated_at": "2026-04-26T08:43:40.582Z",
+    "accepted_at": "2026-04-26T08:40:36.386Z",
+    "completed_at": "2026-04-26T08:43:40.582Z",
+    "cancelled_at": null,
+    "estimated_arrival_minutes": 5,
+    "reported_issues": [],
+    "actual_issues": []
+  }
+},
+{
+  "model": "services.servicerequest",
+  "pk": 5,
+  "fields": {
+    "user": 5,
+    "mechanic": 6,
+    "vehicle_make": "Honda",
+    "vehicle_model": "Activa 6g",
+    "vehicle_year": 2025,
+    "reported_issue": 4,
+    "actual_issue": null,
+    "issue_was_overridden": false,
+    "user_approved_override": false,
+    "override_notes": "",
+    "user_latitude": "28.6139391",
+    "user_longitude": "77.2090212",
+    "user_address": "",
+    "distance_km": "5.00",
+    "distance_cost": "75.00",
+    "issue_cost": "120.00",
+    "total_cost": "195.00",
+    "status": "cancelled",
+    "created_at": "2026-04-26T09:37:39.651Z",
+    "updated_at": "2026-04-26T11:33:48.730Z",
+    "accepted_at": "2026-04-26T09:42:02.898Z",
+    "completed_at": null,
+    "cancelled_at": "2026-04-26T11:33:48.730Z",
+    "estimated_arrival_minutes": 15,
+    "reported_issues": [],
+    "actual_issues": []
+  }
+},
+{
+  "model": "services.servicerequest",
+  "pk": 6,
+  "fields": {
+    "user": 5,
+    "mechanic": 6,
+    "vehicle_make": "Honda",
+    "vehicle_model": "Activa 6g",
+    "vehicle_year": 2023,
+    "reported_issue": 7,
+    "actual_issue": null,
+    "issue_was_overridden": false,
+    "user_approved_override": false,
+    "override_notes": "",
+    "user_latitude": "28.6139391",
+    "user_longitude": "77.2090212",
+    "user_address": "",
+    "distance_km": "5.00",
+    "distance_cost": "75.00",
+    "issue_cost": "25.00",
+    "total_cost": "100.00",
+    "status": "cancelled",
+    "created_at": "2026-04-26T11:34:29.256Z",
+    "updated_at": "2026-04-26T12:55:41.872Z",
+    "accepted_at": "2026-04-26T11:35:32.912Z",
+    "completed_at": null,
+    "cancelled_at": "2026-04-26T12:55:41.872Z",
+    "estimated_arrival_minutes": 15,
+    "reported_issues": [
+      7
+    ],
+    "actual_issues": []
+  }
+},
+{
+  "model": "services.servicerequest",
+  "pk": 7,
+  "fields": {
+    "user": 5,
+    "mechanic": 6,
+    "vehicle_make": "Honda",
+    "vehicle_model": "Activa 6g",
+    "vehicle_year": 2025,
+    "reported_issue": 7,
+    "actual_issue": 2,
+    "issue_was_overridden": true,
+    "user_approved_override": true,
+    "override_notes": "",
+    "user_latitude": "28.6139391",
+    "user_longitude": "77.2090212",
+    "user_address": "",
+    "distance_km": "5.00",
+    "distance_cost": "75.00",
+    "issue_cost": "200.00",
+    "total_cost": "275.00",
+    "status": "completed",
+    "created_at": "2026-04-26T12:56:02.008Z",
+    "updated_at": "2026-04-26T13:16:38.468Z",
+    "accepted_at": "2026-04-26T12:56:26.969Z",
+    "completed_at": "2026-04-26T13:16:38.467Z",
+    "cancelled_at": null,
+    "estimated_arrival_minutes": 15,
+    "reported_issues": [
+      2
+    ],
+    "actual_issues": [
+      2
+    ]
+  }
+},
+{
+  "model": "services.servicerequest",
+  "pk": 8,
+  "fields": {
+    "user": 5,
+    "mechanic": 6,
+    "vehicle_make": "Honda",
+    "vehicle_model": "Activa 6g",
+    "vehicle_year": 2026,
+    "reported_issue": 4,
+    "actual_issue": null,
+    "issue_was_overridden": false,
+    "user_approved_override": false,
+    "override_notes": "",
+    "user_latitude": "28.6139391",
+    "user_longitude": "77.2090212",
+    "user_address": "",
+    "distance_km": "5.00",
+    "distance_cost": "75.00",
+    "issue_cost": "120.00",
+    "total_cost": "195.00",
+    "status": "completed",
+    "created_at": "2026-04-26T14:00:01.110Z",
+    "updated_at": "2026-04-26T14:00:33.021Z",
+    "accepted_at": "2026-04-26T14:00:20.443Z",
+    "completed_at": "2026-04-26T14:00:33.021Z",
+    "cancelled_at": null,
+    "estimated_arrival_minutes": 15,
+    "reported_issues": [
+      4
+    ],
+    "actual_issues": []
+  }
+},
+{
+  "model": "services.servicerequest",
+  "pk": 9,
+  "fields": {
+    "user": 5,
+    "mechanic": 6,
+    "vehicle_make": "Honda",
+    "vehicle_model": "Activa 6g",
+    "vehicle_year": 2026,
+    "reported_issue": 2,
+    "actual_issue": null,
+    "issue_was_overridden": false,
+    "user_approved_override": false,
+    "override_notes": "",
+    "user_latitude": "28.6139391",
+    "user_longitude": "77.2090212",
+    "user_address": "",
+    "distance_km": "5.00",
+    "distance_cost": "75.00",
+    "issue_cost": "200.00",
+    "total_cost": "275.00",
+    "status": "completed",
+    "created_at": "2026-04-26T14:01:20.526Z",
+    "updated_at": "2026-04-26T14:02:44.469Z",
+    "accepted_at": "2026-04-26T14:01:39.932Z",
+    "completed_at": "2026-04-26T14:02:44.469Z",
+    "cancelled_at": null,
+    "estimated_arrival_minutes": 15,
+    "reported_issues": [
+      2
+    ],
+    "actual_issues": []
+  }
+},
+{
+  "model": "services.servicerequest",
+  "pk": 10,
+  "fields": {
+    "user": 5,
+    "mechanic": 6,
+    "vehicle_make": "Honda",
+    "vehicle_model": "Activa 6g",
+    "vehicle_year": 2025,
+    "reported_issue": 1,
+    "actual_issue": null,
+    "issue_was_overridden": false,
+    "user_approved_override": false,
+    "override_notes": "",
+    "user_latitude": "28.6139391",
+    "user_longitude": "77.2090212",
+    "user_address": "",
+    "distance_km": "5.00",
+    "distance_cost": "75.00",
+    "issue_cost": "150.00",
+    "total_cost": "225.00",
+    "status": "completed",
+    "created_at": "2026-04-26T14:04:33.992Z",
+    "updated_at": "2026-04-26T14:05:15.060Z",
+    "accepted_at": "2026-04-26T14:04:53.549Z",
+    "completed_at": "2026-04-26T14:05:15.060Z",
+    "cancelled_at": null,
+    "estimated_arrival_minutes": 15,
+    "reported_issues": [
+      1
+    ],
+    "actual_issues": []
+  }
+},
+{
+  "model": "services.servicerequest",
+  "pk": 11,
+  "fields": {
+    "user": 5,
+    "mechanic": 6,
+    "vehicle_make": "Honda",
+    "vehicle_model": "Activa 6g",
+    "vehicle_year": 2025,
+    "reported_issue": 5,
+    "actual_issue": null,
+    "issue_was_overridden": false,
+    "user_approved_override": false,
+    "override_notes": "",
+    "user_latitude": "28.6139391",
+    "user_longitude": "77.2090212",
+    "user_address": "",
+    "distance_km": "5.00",
+    "distance_cost": "75.00",
+    "issue_cost": "300.00",
+    "total_cost": "375.00",
+    "status": "completed",
+    "created_at": "2026-04-26T14:10:07.965Z",
+    "updated_at": "2026-04-27T07:29:53.976Z",
+    "accepted_at": "2026-04-26T14:10:31.964Z",
+    "completed_at": "2026-04-27T07:29:53.976Z",
+    "cancelled_at": null,
+    "estimated_arrival_minutes": 15,
+    "reported_issues": [
+      5
+    ],
+    "actual_issues": []
+  }
+},
+{
+  "model": "services.servicerequest",
+  "pk": 12,
+  "fields": {
+    "user": 1,
+    "mechanic": 2,
+    "vehicle_make": "Ola Electric",
+    "vehicle_model": "prime",
+    "vehicle_year": 2024,
+    "reported_issue": 1,
+    "actual_issue": 2,
+    "issue_was_overridden": true,
+    "user_approved_override": true,
+    "override_notes": "",
+    "user_latitude": "23.0172901",
+    "user_longitude": "72.6925535",
+    "user_address": "",
+    "distance_km": "0.01",
+    "distance_cost": "0.15",
+    "issue_cost": "600.00",
+    "total_cost": "600.15",
+    "status": "completed",
+    "created_at": "2026-04-26T14:35:22.814Z",
+    "updated_at": "2026-04-26T14:48:01.954Z",
+    "accepted_at": "2026-04-26T14:36:48.704Z",
+    "completed_at": "2026-04-26T14:41:47.494Z",
+    "cancelled_at": null,
+    "estimated_arrival_minutes": 5,
+    "reported_issues": [
+      1,
+      2,
+      3
+    ],
+    "actual_issues": [
+      2,
+      3
+    ]
+  }
+},
+{
+  "model": "services.servicerequest",
+  "pk": 13,
+  "fields": {
+    "user": 1,
+    "mechanic": 2,
+    "vehicle_make": "KTM",
+    "vehicle_model": "prime",
+    "vehicle_year": 2024,
+    "reported_issue": 4,
+    "actual_issue": null,
+    "issue_was_overridden": false,
+    "user_approved_override": false,
+    "override_notes": "",
+    "user_latitude": "23.0172102",
+    "user_longitude": "72.6925684",
+    "user_address": "",
+    "distance_km": "0.00",
+    "distance_cost": "0.00",
+    "issue_cost": "120.00",
+    "total_cost": "120.00",
+    "status": "completed",
+    "created_at": "2026-04-26T14:48:37.097Z",
+    "updated_at": "2026-04-26T15:21:38.690Z",
+    "accepted_at": "2026-04-26T15:21:25.102Z",
+    "completed_at": "2026-04-26T15:21:38.690Z",
+    "cancelled_at": null,
+    "estimated_arrival_minutes": 5,
+    "reported_issues": [
+      4
+    ],
+    "actual_issues": []
+  }
+},
+{
+  "model": "services.servicerequest",
+  "pk": 14,
+  "fields": {
+    "user": 1,
+    "mechanic": 2,
+    "vehicle_make": "Bajaj",
+    "vehicle_model": "lkj",
+    "vehicle_year": 2015,
+    "reported_issue": 11,
+    "actual_issue": 3,
+    "issue_was_overridden": true,
+    "user_approved_override": true,
+    "override_notes": "",
+    "user_latitude": "23.0172810",
+    "user_longitude": "72.6925766",
+    "user_address": "",
+    "distance_km": "0.01",
+    "distance_cost": "0.15",
+    "issue_cost": "450.00",
+    "total_cost": "450.15",
+    "status": "completed",
+    "created_at": "2026-04-26T15:47:33.217Z",
+    "updated_at": "2026-04-26T15:51:16.920Z",
+    "accepted_at": "2026-04-26T15:49:53.711Z",
+    "completed_at": "2026-04-26T15:51:16.920Z",
+    "cancelled_at": null,
+    "estimated_arrival_minutes": 5,
+    "reported_issues": [
+      3,
+      11
+    ],
+    "actual_issues": [
+      3
+    ]
+  }
+},
+{
+  "model": "services.servicerequest",
+  "pk": 15,
+  "fields": {
+    "user": 1,
+    "mechanic": 2,
+    "vehicle_make": "Ola Electric",
+    "vehicle_model": "iy",
+    "vehicle_year": 2006,
+    "reported_issue": 2,
+    "actual_issue": 4,
+    "issue_was_overridden": true,
+    "user_approved_override": true,
+    "override_notes": "",
+    "user_latitude": "23.0172712",
+    "user_longitude": "72.6925647",
+    "user_address": "",
+    "distance_km": "0.00",
+    "distance_cost": "0.00",
+    "issue_cost": "320.00",
+    "total_cost": "395.00",
+    "status": "completed",
+    "created_at": "2026-04-26T15:52:24.416Z",
+    "updated_at": "2026-04-26T15:53:52.004Z",
+    "accepted_at": "2026-04-26T15:53:02.119Z",
+    "completed_at": "2026-04-26T15:53:52.002Z",
+    "cancelled_at": null,
+    "estimated_arrival_minutes": 5,
+    "reported_issues": [
+      2,
+      4
+    ],
+    "actual_issues": [
+      4
+    ]
+  }
+},
+{
+  "model": "services.servicerequest",
+  "pk": 16,
+  "fields": {
+    "user": 3,
+    "mechanic": 2,
+    "vehicle_make": "Ola Electric",
+    "vehicle_model": "Activa 6G",
+    "vehicle_year": 1993,
+    "reported_issue": 2,
+    "actual_issue": null,
+    "issue_was_overridden": false,
+    "user_approved_override": false,
+    "override_notes": "",
+    "user_latitude": "28.6139391",
+    "user_longitude": "77.2090212",
+    "user_address": "",
+    "distance_km": "769.01",
+    "distance_cost": "11535.15",
+    "issue_cost": "200.00",
+    "total_cost": "11735.15",
+    "status": "completed",
+    "created_at": "2026-04-26T19:32:11.492Z",
+    "updated_at": "2026-04-26T20:30:09.545Z",
+    "accepted_at": "2026-04-26T19:32:33.946Z",
+    "completed_at": "2026-04-26T20:30:09.545Z",
+    "cancelled_at": null,
+    "estimated_arrival_minutes": 2307,
+    "reported_issues": [
+      2
+    ],
+    "actual_issues": []
+  }
+},
+{
+  "model": "services.servicerequest",
+  "pk": 17,
+  "fields": {
+    "user": 1,
+    "mechanic": 2,
+    "vehicle_make": "Hero",
+    "vehicle_model": "iy",
+    "vehicle_year": 2006,
+    "reported_issue": 4,
+    "actual_issue": null,
+    "issue_was_overridden": false,
+    "user_approved_override": false,
+    "override_notes": "",
+    "user_latitude": "23.0172166",
+    "user_longitude": "72.6926187",
+    "user_address": "",
+    "distance_km": "0.00",
+    "distance_cost": "0.00",
+    "issue_cost": "120.00",
+    "total_cost": "120.00",
+    "status": "completed",
+    "created_at": "2026-04-26T19:34:30.678Z",
+    "updated_at": "2026-04-26T19:36:21.358Z",
+    "accepted_at": "2026-04-26T19:34:42.615Z",
+    "completed_at": "2026-04-26T19:36:21.358Z",
+    "cancelled_at": null,
+    "estimated_arrival_minutes": 5,
+    "reported_issues": [
+      4
+    ],
+    "actual_issues": []
+  }
+},
+{
+  "model": "services.servicerequest",
+  "pk": 18,
+  "fields": {
+    "user": 1,
+    "mechanic": 4,
+    "vehicle_make": "Kawasaki",
+    "vehicle_model": "dgd",
+    "vehicle_year": 1991,
+    "reported_issue": 8,
+    "actual_issue": 4,
+    "issue_was_overridden": true,
+    "user_approved_override": true,
+    "override_notes": "",
+    "user_latitude": "23.0172481",
+    "user_longitude": "72.6925539",
+    "user_address": "",
+    "distance_km": "5.00",
+    "distance_cost": "75.00",
+    "issue_cost": "345.00",
+    "total_cost": "420.00",
+    "status": "in_progress",
+    "created_at": "2026-04-26T20:25:57.632Z",
+    "updated_at": "2026-04-26T20:27:11.680Z",
+    "accepted_at": "2026-04-26T20:26:31.605Z",
+    "completed_at": null,
+    "cancelled_at": null,
+    "estimated_arrival_minutes": 15,
+    "reported_issues": [
+      4,
+      8,
+      11
+    ],
+    "actual_issues": [
+      4
+    ]
+  }
+},
+{
+  "model": "services.servicerequest",
+  "pk": 19,
+  "fields": {
+    "user": 1,
+    "mechanic": 4,
+    "vehicle_make": "Ola Electric",
+    "vehicle_model": "vcxbx",
+    "vehicle_year": 2011,
+    "reported_issue": 1,
+    "actual_issue": null,
+    "issue_was_overridden": false,
+    "user_approved_override": false,
+    "override_notes": "",
+    "user_latitude": "23.0172919",
+    "user_longitude": "72.6926055",
+    "user_address": "",
+    "distance_km": "5.00",
+    "distance_cost": "75.00",
+    "issue_cost": "270.00",
+    "total_cost": "345.00",
+    "status": "in_progress",
+    "created_at": "2026-04-26T20:36:38.296Z",
+    "updated_at": "2026-04-26T20:37:23.692Z",
+    "accepted_at": "2026-04-26T20:37:13.715Z",
+    "completed_at": null,
+    "cancelled_at": null,
+    "estimated_arrival_minutes": 15,
+    "reported_issues": [
+      1,
+      4
+    ],
+    "actual_issues": []
+  }
+},
+{
+  "model": "services.servicerequest",
+  "pk": 20,
+  "fields": {
+    "user": 1,
+    "mechanic": 2,
+    "vehicle_make": "TVS",
+    "vehicle_model": "cvxz",
+    "vehicle_year": 2013,
+    "reported_issue": 3,
+    "actual_issue": null,
+    "issue_was_overridden": false,
+    "user_approved_override": false,
+    "override_notes": "",
+    "user_latitude": "23.0173160",
+    "user_longitude": "72.6926232",
+    "user_address": "",
+    "distance_km": "0.01",
+    "distance_cost": "0.15",
+    "issue_cost": "250.00",
+    "total_cost": "250.15",
+    "status": "completed",
+    "created_at": "2026-04-26T20:39:16.540Z",
+    "updated_at": "2026-04-26T20:39:45.766Z",
+    "accepted_at": "2026-04-26T20:39:25.980Z",
+    "completed_at": "2026-04-26T20:39:45.765Z",
+    "cancelled_at": null,
+    "estimated_arrival_minutes": 5,
+    "reported_issues": [
+      3
+    ],
+    "actual_issues": []
+  }
+},
+{
+  "model": "services.servicerequest",
+  "pk": 21,
+  "fields": {
+    "user": 5,
+    "mechanic": 6,
+    "vehicle_make": "Bajaj",
+    "vehicle_model": "CT100",
+    "vehicle_year": 2022,
+    "reported_issue": 1,
+    "actual_issue": null,
+    "issue_was_overridden": false,
+    "user_approved_override": false,
+    "override_notes": "",
+    "user_latitude": "28.6139391",
+    "user_longitude": "77.2090212",
+    "user_address": "",
+    "distance_km": "5.00",
+    "distance_cost": "75.00",
+    "issue_cost": "175.00",
+    "total_cost": "250.00",
+    "status": "cancelled",
+    "created_at": "2026-04-27T07:30:48.693Z",
+    "updated_at": "2026-04-27T09:10:58.295Z",
+    "accepted_at": "2026-04-27T07:31:13.690Z",
+    "completed_at": null,
+    "cancelled_at": "2026-04-27T09:10:58.295Z",
+    "estimated_arrival_minutes": 15,
+    "reported_issues": [
+      1,
+      8
+    ],
+    "actual_issues": []
+  }
+},
+{
+  "model": "services.servicerequest",
+  "pk": 22,
+  "fields": {
+    "user": 7,
+    "mechanic": null,
+    "vehicle_make": "Honda",
+    "vehicle_model": "Activa 6g",
+    "vehicle_year": 2025,
+    "reported_issue": 3,
+    "actual_issue": null,
+    "issue_was_overridden": false,
+    "user_approved_override": false,
+    "override_notes": "",
+    "user_latitude": "28.6139391",
+    "user_longitude": "77.2090212",
+    "user_address": "",
+    "distance_km": "5.00",
+    "distance_cost": "75.00",
+    "issue_cost": "250.00",
+    "total_cost": "325.00",
+    "status": "cancelled",
+    "created_at": "2026-04-27T07:36:27.405Z",
+    "updated_at": "2026-04-27T07:40:04.741Z",
+    "accepted_at": null,
+    "completed_at": null,
+    "cancelled_at": "2026-04-27T07:40:04.740Z",
+    "estimated_arrival_minutes": null,
+    "reported_issues": [
+      3
+    ],
+    "actual_issues": []
+  }
+},
+{
+  "model": "services.servicerequest",
+  "pk": 23,
+  "fields": {
+    "user": 7,
+    "mechanic": null,
+    "vehicle_make": "Honda",
+    "vehicle_model": "Activa 6g",
+    "vehicle_year": 2025,
+    "reported_issue": 1,
+    "actual_issue": null,
+    "issue_was_overridden": false,
+    "user_approved_override": false,
+    "override_notes": "",
+    "user_latitude": "22.9978399",
+    "user_longitude": "72.5518218",
+    "user_address": "",
+    "distance_km": "5.00",
+    "distance_cost": "75.00",
+    "issue_cost": "150.00",
+    "total_cost": "225.00",
+    "status": "cancelled",
+    "created_at": "2026-04-27T07:41:17.213Z",
+    "updated_at": "2026-04-27T07:43:01.834Z",
+    "accepted_at": null,
+    "completed_at": null,
+    "cancelled_at": "2026-04-27T07:43:01.834Z",
+    "estimated_arrival_minutes": null,
+    "reported_issues": [
+      1
+    ],
+    "actual_issues": []
+  }
+},
+{
+  "model": "services.servicerequest",
+  "pk": 24,
+  "fields": {
+    "user": 7,
+    "mechanic": 8,
+    "vehicle_make": "Hero",
+    "vehicle_model": "Splendor",
+    "vehicle_year": 2025,
+    "reported_issue": 1,
+    "actual_issue": null,
+    "issue_was_overridden": false,
+    "user_approved_override": false,
+    "override_notes": "",
+    "user_latitude": "22.9978581",
+    "user_longitude": "72.5518699",
+    "user_address": "",
+    "distance_km": "0.02",
+    "distance_cost": "0.30",
+    "issue_cost": "150.00",
+    "total_cost": "150.30",
+    "status": "completed",
+    "created_at": "2026-04-27T07:43:37.310Z",
+    "updated_at": "2026-04-27T07:50:10.513Z",
+    "accepted_at": "2026-04-27T07:44:40.288Z",
+    "completed_at": "2026-04-27T07:50:10.513Z",
+    "cancelled_at": null,
+    "estimated_arrival_minutes": 5,
+    "reported_issues": [
+      1
+    ],
+    "actual_issues": []
+  }
+},
+{
+  "model": "services.servicerequest",
+  "pk": 25,
+  "fields": {
+    "user": 7,
+    "mechanic": 8,
+    "vehicle_make": "Honda",
+    "vehicle_model": "Activa 6g",
+    "vehicle_year": 2026,
+    "reported_issue": 3,
+    "actual_issue": null,
+    "issue_was_overridden": false,
+    "user_approved_override": false,
+    "override_notes": "",
+    "user_latitude": "22.9976286",
+    "user_longitude": "72.5518992",
+    "user_address": "",
+    "distance_km": "0.02",
+    "distance_cost": "0.30",
+    "issue_cost": "250.00",
+    "total_cost": "250.30",
+    "status": "completed",
+    "created_at": "2026-04-27T08:10:35.815Z",
+    "updated_at": "2026-04-27T08:13:45.512Z",
+    "accepted_at": "2026-04-27T08:11:05.520Z",
+    "completed_at": "2026-04-27T08:13:45.512Z",
+    "cancelled_at": null,
+    "estimated_arrival_minutes": 5,
+    "reported_issues": [
+      3
+    ],
+    "actual_issues": []
+  }
+},
+{
+  "model": "services.servicerequest",
+  "pk": 26,
+  "fields": {
+    "user": 7,
+    "mechanic": 8,
+    "vehicle_make": "Honda",
+    "vehicle_model": "Activa 6g",
+    "vehicle_year": 2025,
+    "reported_issue": 2,
+    "actual_issue": null,
+    "issue_was_overridden": false,
+    "user_approved_override": false,
+    "override_notes": "",
+    "user_latitude": "22.9977030",
+    "user_longitude": "72.5515736",
+    "user_address": "",
+    "distance_km": "0.05",
+    "distance_cost": "0.75",
+    "issue_cost": "200.00",
+    "total_cost": "200.75",
+    "status": "completed",
+    "created_at": "2026-04-27T08:18:52.956Z",
+    "updated_at": "2026-04-27T09:10:14.468Z",
+    "accepted_at": "2026-04-27T08:19:28.121Z",
+    "completed_at": "2026-04-27T09:10:14.468Z",
+    "cancelled_at": null,
+    "estimated_arrival_minutes": 5,
+    "reported_issues": [
+      2
+    ],
+    "actual_issues": []
+  }
+},
+{
+  "model": "services.servicerequest",
+  "pk": 27,
+  "fields": {
+    "user": 5,
+    "mechanic": 6,
+    "vehicle_make": "Honda",
+    "vehicle_model": "Activa 6g",
+    "vehicle_year": 2023,
+    "reported_issue": 1,
+    "actual_issue": null,
+    "issue_was_overridden": false,
+    "user_approved_override": false,
+    "override_notes": "",
+    "user_latitude": "22.9978530",
+    "user_longitude": "72.5518674",
+    "user_address": "",
+    "distance_km": "5.00",
+    "distance_cost": "75.00",
+    "issue_cost": "150.00",
+    "total_cost": "225.00",
+    "status": "accepted",
+    "created_at": "2026-04-27T09:11:19.255Z",
+    "updated_at": "2026-04-27T09:11:54.716Z",
+    "accepted_at": "2026-04-27T09:11:54.716Z",
+    "completed_at": null,
+    "cancelled_at": null,
+    "estimated_arrival_minutes": 15,
+    "reported_issues": [
+      1
+    ],
+    "actual_issues": []
+  }
+},
+{
+  "model": "services.servicerequest",
+  "pk": 28,
+  "fields": {
+    "user": 7,
+    "mechanic": 8,
+    "vehicle_make": "Honda",
+    "vehicle_model": "Activa 6g",
+    "vehicle_year": 2025,
+    "reported_issue": 1,
+    "actual_issue": null,
+    "issue_was_overridden": false,
+    "user_approved_override": false,
+    "override_notes": "",
+    "user_latitude": "22.9977116",
+    "user_longitude": "72.5515522",
+    "user_address": "",
+    "distance_km": "0.06",
+    "distance_cost": "0.90",
+    "issue_cost": "150.00",
+    "total_cost": "150.90",
+    "status": "cancelled",
+    "created_at": "2026-04-27T09:12:40.633Z",
+    "updated_at": "2026-04-27T09:21:45.522Z",
+    "accepted_at": "2026-04-27T09:13:11.886Z",
+    "completed_at": null,
+    "cancelled_at": "2026-04-27T09:21:45.522Z",
+    "estimated_arrival_minutes": 5,
+    "reported_issues": [
+      1
+    ],
+    "actual_issues": []
+  }
+},
+{
+  "model": "services.servicerequest",
+  "pk": 29,
+  "fields": {
+    "user": 7,
+    "mechanic": 8,
+    "vehicle_make": "Honda",
+    "vehicle_model": "Activa 6g",
+    "vehicle_year": 2025,
+    "reported_issue": 1,
+    "actual_issue": null,
+    "issue_was_overridden": false,
+    "user_approved_override": false,
+    "override_notes": "",
+    "user_latitude": "22.9978399",
+    "user_longitude": "72.5518218",
+    "user_address": "",
+    "distance_km": "0.03",
+    "distance_cost": "0.45",
+    "issue_cost": "150.00",
+    "total_cost": "150.45",
+    "status": "cancelled",
+    "created_at": "2026-04-27T09:22:02.753Z",
+    "updated_at": "2026-04-27T09:25:20.194Z",
+    "accepted_at": "2026-04-27T09:22:33.347Z",
+    "completed_at": null,
+    "cancelled_at": "2026-04-27T09:25:20.194Z",
+    "estimated_arrival_minutes": 5,
+    "reported_issues": [
+      1
+    ],
+    "actual_issues": []
+  }
+},
+{
+  "model": "services.servicerequest",
+  "pk": 30,
+  "fields": {
+    "user": 7,
+    "mechanic": 8,
+    "vehicle_make": "Honda",
+    "vehicle_model": "Activa 6g",
+    "vehicle_year": 2025,
+    "reported_issue": 2,
+    "actual_issue": null,
+    "issue_was_overridden": false,
+    "user_approved_override": false,
+    "override_notes": "",
+    "user_latitude": "22.9978912",
+    "user_longitude": "72.5518438",
+    "user_address": "",
+    "distance_km": "0.02",
+    "distance_cost": "0.30",
+    "issue_cost": "200.00",
+    "total_cost": "200.30",
+    "status": "completed",
+    "created_at": "2026-04-27T09:25:37.309Z",
+    "updated_at": "2026-04-27T09:27:28.992Z",
+    "accepted_at": "2026-04-27T09:26:00.092Z",
+    "completed_at": "2026-04-27T09:27:28.992Z",
+    "cancelled_at": null,
+    "estimated_arrival_minutes": 5,
+    "reported_issues": [
+      2
+    ],
+    "actual_issues": []
+  }
+},
+{
+  "model": "services.servicerequest",
+  "pk": 31,
+  "fields": {
+    "user": 1,
+    "mechanic": 2,
+    "vehicle_make": "Aprilia",
+    "vehicle_model": "xcxcz",
+    "vehicle_year": 2010,
+    "reported_issue": 2,
+    "actual_issue": null,
+    "issue_was_overridden": false,
+    "user_approved_override": false,
+    "override_notes": "",
+    "user_latitude": "23.0172574",
+    "user_longitude": "72.6925932",
+    "user_address": "",
+    "distance_km": "0.01",
+    "distance_cost": "0.15",
+    "issue_cost": "200.00",
+    "total_cost": "200.15",
+    "status": "completed",
+    "created_at": "2026-04-29T09:20:52.425Z",
+    "updated_at": "2026-04-29T10:06:03.737Z",
+    "accepted_at": "2026-04-29T09:20:59.869Z",
+    "completed_at": "2026-04-29T10:06:03.736Z",
+    "cancelled_at": null,
+    "estimated_arrival_minutes": 5,
+    "reported_issues": [
+      2
+    ],
+    "actual_issues": []
+  }
+},
+{
+  "model": "services.servicerequest",
+  "pk": 32,
+  "fields": {
+    "user": 1,
+    "mechanic": 2,
+    "vehicle_make": "Bajaj",
+    "vehicle_model": "2012",
+    "vehicle_year": null,
+    "reported_issue": 1,
+    "actual_issue": null,
+    "issue_was_overridden": false,
+    "user_approved_override": false,
+    "override_notes": "",
+    "user_latitude": "23.0173160",
+    "user_longitude": "72.6926232",
+    "user_address": "",
+    "distance_km": "0.01",
+    "distance_cost": "0.15",
+    "issue_cost": "350.00",
+    "total_cost": "350.15",
+    "status": "completed",
+    "created_at": "2026-04-29T10:35:30.924Z",
+    "updated_at": "2026-04-29T10:42:08.680Z",
+    "accepted_at": "2026-04-29T10:36:24.048Z",
+    "completed_at": "2026-04-29T10:42:08.680Z",
+    "cancelled_at": null,
+    "estimated_arrival_minutes": 5,
+    "reported_issues": [
+      1,
+      2
+    ],
+    "actual_issues": []
+  }
+},
+{
+  "model": "services.servicerequest",
+  "pk": 33,
+  "fields": {
+    "user": 1,
+    "mechanic": 2,
+    "vehicle_make": "Kawasaki",
+    "vehicle_model": "dfdf",
+    "vehicle_year": 1993,
+    "reported_issue": 2,
+    "actual_issue": 4,
+    "issue_was_overridden": true,
+    "user_approved_override": true,
+    "override_notes": "",
+    "user_latitude": "23.0251334",
+    "user_longitude": "72.6694817",
+    "user_address": "",
+    "distance_km": "3.39",
+    "distance_cost": "50.85",
+    "issue_cost": "320.00",
+    "total_cost": "370.85",
+    "status": "completed",
+    "created_at": "2026-06-11T04:30:40.556Z",
+    "updated_at": "2026-06-11T04:33:44.700Z",
+    "accepted_at": "2026-06-11T04:31:09.298Z",
+    "completed_at": "2026-06-11T04:33:44.700Z",
+    "cancelled_at": null,
+    "estimated_arrival_minutes": 10,
+    "reported_issues": [
+      2,
+      4
+    ],
+    "actual_issues": [
+      4
+    ]
+  }
+},
+{
+  "model": "payments.payment",
+  "pk": 1,
+  "fields": {
+    "payment_method": "ONLINE",
+    "service_request": 2,
+    "razorpay_order_id": "order_mock_a5f197c3b233",
+    "razorpay_payment_id": "pay_mock_1777106008510",
+    "razorpay_signature": "sig_mock_1777106008510",
+    "amount": "150.00",
+    "currency": "INR",
+    "status": "paid",
+    "created_at": "2026-04-25T08:33:28.456Z",
+    "paid_at": "2026-04-25T08:33:28.538Z"
+  }
+},
+{
+  "model": "payments.payment",
+  "pk": 2,
+  "fields": {
+    "payment_method": "ONLINE",
+    "service_request": 4,
+    "razorpay_order_id": "order_mock_c157637c829f",
+    "razorpay_payment_id": "pay_mock_1777193031534",
+    "razorpay_signature": "sig_mock_1777193031534",
+    "amount": "100.00",
+    "currency": "INR",
+    "status": "paid",
+    "created_at": "2026-04-26T08:43:51.507Z",
+    "paid_at": "2026-04-26T08:43:51.569Z"
+  }
+},
+{
+  "model": "payments.payment",
+  "pk": 3,
+  "fields": {
+    "payment_method": "CASH",
+    "service_request": 12,
+    "razorpay_order_id": "",
+    "razorpay_payment_id": "",
+    "razorpay_signature": "",
+    "amount": "600.15",
+    "currency": "INR",
+    "status": "paid",
+    "created_at": "2026-04-26T14:41:58.728Z",
+    "paid_at": "2026-04-26T14:48:01.914Z"
+  }
+},
+{
+  "model": "payments.payment",
+  "pk": 4,
+  "fields": {
+    "payment_method": "ONLINE",
+    "service_request": 13,
+    "razorpay_order_id": "order_mock_17df55144b7c",
+    "razorpay_payment_id": "pay_mock_1777216914930",
+    "razorpay_signature": "sig_mock_1777216914930",
+    "amount": "120.00",
+    "currency": "INR",
+    "status": "paid",
+    "created_at": "2026-04-26T15:21:54.879Z",
+    "paid_at": "2026-04-26T15:21:54.957Z"
+  }
+},
+{
+  "model": "payments.payment",
+  "pk": 5,
+  "fields": {
+    "payment_method": "CASH",
+    "service_request": 14,
+    "razorpay_order_id": "",
+    "razorpay_payment_id": "",
+    "razorpay_signature": "",
+    "amount": "450.15",
+    "currency": "INR",
+    "status": "paid",
+    "created_at": "2026-04-26T15:51:08.367Z",
+    "paid_at": "2026-04-26T15:51:16.877Z"
+  }
+},
+{
+  "model": "payments.payment",
+  "pk": 6,
+  "fields": {
+    "payment_method": "CASH",
+    "service_request": 15,
+    "razorpay_order_id": "",
+    "razorpay_payment_id": "",
+    "razorpay_signature": "",
+    "amount": "395.00",
+    "currency": "INR",
+    "status": "paid",
+    "created_at": "2026-04-26T15:53:44.919Z",
+    "paid_at": "2026-04-26T15:53:51.987Z"
+  }
+},
+{
+  "model": "payments.payment",
+  "pk": 7,
+  "fields": {
+    "payment_method": "ONLINE",
+    "service_request": 17,
+    "razorpay_order_id": "order_mock_e8be4ef1c093",
+    "razorpay_payment_id": "pay_mock_1777232181295",
+    "razorpay_signature": "sig_mock_1777232181295",
+    "amount": "120.00",
+    "currency": "INR",
+    "status": "paid",
+    "created_at": "2026-04-26T19:36:21.266Z",
+    "paid_at": "2026-04-26T19:36:21.340Z"
+  }
+},
+{
+  "model": "payments.payment",
+  "pk": 8,
+  "fields": {
+    "payment_method": "CASH",
+    "service_request": 16,
+    "razorpay_order_id": "",
+    "razorpay_payment_id": "",
+    "razorpay_signature": "",
+    "amount": "11735.15",
+    "currency": "INR",
+    "status": "paid",
+    "created_at": "2026-04-26T20:29:55.314Z",
+    "paid_at": "2026-04-26T20:30:09.533Z"
+  }
+},
+{
+  "model": "payments.payment",
+  "pk": 9,
+  "fields": {
+    "payment_method": "ONLINE",
+    "service_request": 20,
+    "razorpay_order_id": "order_mock_ba02bac79c9c",
+    "razorpay_payment_id": "pay_mock_1777235985731",
+    "razorpay_signature": "sig_mock_1777235985731",
+    "amount": "250.15",
+    "currency": "INR",
+    "status": "paid",
+    "created_at": "2026-04-26T20:39:45.709Z",
+    "paid_at": "2026-04-26T20:39:45.751Z"
+  }
+},
+{
+  "model": "payments.payment",
+  "pk": 10,
+  "fields": {
+    "payment_method": "CASH",
+    "service_request": 11,
+    "razorpay_order_id": "order_SiR1h3axTHpiE5",
+    "razorpay_payment_id": "",
+    "razorpay_signature": "",
+    "amount": "375.00",
+    "currency": "INR",
+    "status": "paid",
+    "created_at": "2026-04-27T07:29:21.420Z",
+    "paid_at": "2026-04-27T07:29:53.959Z"
+  }
+},
+{
+  "model": "payments.payment",
+  "pk": 11,
+  "fields": {
+    "payment_method": "CASH",
+    "service_request": 24,
+    "razorpay_order_id": "order_SiRLpjivoGDY0C",
+    "razorpay_payment_id": "",
+    "razorpay_signature": "",
+    "amount": "150.30",
+    "currency": "INR",
+    "status": "paid",
+    "created_at": "2026-04-27T07:48:31.568Z",
+    "paid_at": "2026-04-27T07:50:10.499Z"
+  }
+},
+{
+  "model": "payments.payment",
+  "pk": 12,
+  "fields": {
+    "payment_method": "CASH",
+    "service_request": 25,
+    "razorpay_order_id": "order_SiRlSAh3HdzoPp",
+    "razorpay_payment_id": "",
+    "razorpay_signature": "",
+    "amount": "250.30",
+    "currency": "INR",
+    "status": "paid",
+    "created_at": "2026-04-27T08:11:53.006Z",
+    "paid_at": "2026-04-27T08:13:45.496Z"
+  }
+},
+{
+  "model": "payments.payment",
+  "pk": 13,
+  "fields": {
+    "payment_method": "ONLINE",
+    "service_request": 26,
+    "razorpay_order_id": "order_SiSg0crAtFzVWh",
+    "razorpay_payment_id": "pay_SiSjoljPmKNAVi",
+    "razorpay_signature": "2f34e9ab3eda6e580fcd5e2963b6ff9330158ee9401577d8409cb8b12ccdd824",
+    "amount": "200.75",
+    "currency": "INR",
+    "status": "paid",
+    "created_at": "2026-04-27T08:20:13.688Z",
+    "paid_at": "2026-04-27T09:10:14.461Z"
+  }
+},
+{
+  "model": "payments.payment",
+  "pk": 14,
+  "fields": {
+    "payment_method": "CASH",
+    "service_request": 30,
+    "razorpay_order_id": "order_SiT1TNTgdFVxrp",
+    "razorpay_payment_id": "",
+    "razorpay_signature": "",
+    "amount": "200.30",
+    "currency": "INR",
+    "status": "paid",
+    "created_at": "2026-04-27T09:26:38.388Z",
+    "paid_at": "2026-04-27T09:27:28.988Z"
+  }
+},
+{
+  "model": "payments.payment",
+  "pk": 15,
+  "fields": {
+    "payment_method": "ONLINE",
+    "service_request": 31,
+    "razorpay_order_id": "order_SjGkODjCd785eI",
+    "razorpay_payment_id": "pay_SjGl4TCC8PxBK4",
+    "razorpay_signature": "51b2ab1185d1246c4eea2fbe3907e87812305ff792b5d410a31f6fdcbd997495",
+    "amount": "200.15",
+    "currency": "INR",
+    "status": "paid",
+    "created_at": "2026-04-29T09:21:19.173Z",
+    "paid_at": "2026-04-29T10:06:03.710Z"
+  }
+},
+{
+  "model": "payments.payment",
+  "pk": 16,
+  "fields": {
+    "payment_method": "ONLINE",
+    "service_request": 32,
+    "razorpay_order_id": "order_SjHLVIMNHlw5qr",
+    "razorpay_payment_id": "pay_SjHN6yFnL1vBnH",
+    "razorpay_signature": "4d2cfc8ad74cb7f4309365c8235961152ee125ebbec089d49f22ca225c96529f",
+    "amount": "350.15",
+    "currency": "INR",
+    "status": "paid",
+    "created_at": "2026-04-29T10:40:16.800Z",
+    "paid_at": "2026-04-29T10:42:08.673Z"
+  }
+},
+{
+  "model": "payments.payment",
+  "pk": 17,
+  "fields": {
+    "payment_method": "ONLINE",
+    "service_request": 33,
+    "razorpay_order_id": "order_T0C3fCbZKkFNzc",
+    "razorpay_payment_id": "pay_T0C4Bs3eSqTviW",
+    "razorpay_signature": "77159cb5fc04bf91f145a39ac6fda09c8fcc407585648e182ac0f2bb691735a3",
+    "amount": "370.85",
+    "currency": "INR",
+    "status": "paid",
+    "created_at": "2026-06-11T04:32:57.432Z",
+    "paid_at": "2026-06-11T04:33:44.657Z"
+  }
+}
+]

@@ -15,7 +15,7 @@ from .serializers import (
     StatusUpdateSerializer,
 )
 from .pricing import calculate_quote, recalculate_on_override
-from apps.accounts.permissions import IsMechanic, IsUser
+from ..accounts.permissions import IsMechanic, IsUser
 
 
 class IssueCatalogListView(generics.ListAPIView):
