@@ -1,6 +1,7 @@
 """
 Django base settings for Moving Garage project.
 """
+import dj_database_url
 import os
 from pathlib import Path
 from datetime import timedelta
@@ -72,17 +73,21 @@ WSGI_APPLICATION = 'config.wsgi.application'
 ASGI_APPLICATION = 'config.asgi.application'
 
 # Database - SQLite for dev, PostgreSQL for production
+# DATABASES = {
+#     'default': {
+#         'ENGINE': os.environ.get('DB_ENGINE', 'django.db.backends.postgresql'),
+#         'NAME': os.environ.get('DB_NAME', BASE_DIR / 'db.sqlite3'),
+#         'USER': os.environ.get('DB_USER', ''),
+#         'PASSWORD': os.environ.get('DB_PASSWORD', ''),
+#         'HOST': os.environ.get('DB_HOST', ''),
+#         'PORT': os.environ.get('DB_PORT', ''),
+#     }
+# }
 DATABASES = {
-    'default': {
-        'ENGINE': os.environ.get('DB_ENGINE', 'django.db.backends.postgresql'),
-        'NAME': os.environ.get('DB_NAME', BASE_DIR / 'db.sqlite3'),
-        'USER': os.environ.get('DB_USER', ''),
-        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
-        'HOST': os.environ.get('DB_HOST', ''),
-        'PORT': os.environ.get('DB_PORT', ''),
-    }
+    "default": dj_database_url.config(
+        default=os.getenv("DB_URL")
+    )
 }
-
 # Custom user model
 AUTH_USER_MODEL = 'accounts.User'
 
