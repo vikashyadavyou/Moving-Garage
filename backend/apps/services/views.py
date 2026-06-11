@@ -224,6 +224,12 @@ class ApproveQuoteView(APIView):
         service_request.issue_cost = pricing['issue_cost']
         service_request.total_cost = pricing['total_cost']
 
+        # Add actual issues to reported set so effective_issues reflects them
+
+        actual_issues=service_request.actual_issues.all()
+        for issue in actual_issues:
+            service_request.reported_issues.add(issue)
+
         service_request.save()
 
         return Response({
