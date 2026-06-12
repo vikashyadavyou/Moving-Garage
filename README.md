@@ -84,6 +84,20 @@ VITE_API_URL=[https://moving-garage.onrender.com](https://moving-garage.onrender
 
 This project was collaboratively built using modern web frameworks and AI-assisted development tools by:
 
-* **[Yadav Vikash](https://github.com/vikashyadavyou)**
-* **[Manthan Upadhyay](https://github.com/manthan110)**
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/vikashyadavyou">
+        <img src="https://github.com/vikashyadavyou.png" width="100px;" alt="Your Name Profile Picture"/><br />
+        <sub><b>Your Name</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/manthan110">
+        <img src="https://github.com/manthan110.png" width="100px;" alt="Manthan Profile Picture"/><br />
+        <sub><b>Manthan</b></sub>
+      </a>
+    </td>
+  </tr>
+</table>
 
