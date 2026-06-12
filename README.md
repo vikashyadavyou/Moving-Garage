@@ -76,7 +76,6 @@ RAZORPAY_KEY_SECRET=your_razorpay_secret
 
 **Frontend (`.env` or Vercel Dashboard):**
 
-```env
 # Do not include a trailing slash!
 VITE_API_URL=[https://moving-garage.onrender.com](https://moving-garage.onrender.com)
 
