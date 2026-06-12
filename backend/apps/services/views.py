@@ -211,23 +211,8 @@ class ApproveQuoteView(APIView):
         if unknown_issue and service_request.reported_issues.filter(pk=unknown_issue.pk).exists():
             service_request.reported_issues.remove(unknown_issue)
 
-        # Add actual issues to the reported set so effective_issues reflects them
         actual = service_request.actual_issues.all()
         for issue in actual:
-            service_request.reported_issues.add(issue)
-
-        # Recalculate final bill based on the updated reported issues (minus unknown)
-        all_issues = list(service_request.reported_issues.all())
-        distance_km = service_request.distance_km or Decimal('5.00')
-        from .pricing import calculate_quote
-        pricing = calculate_quote(distance_km, all_issues)
-        service_request.issue_cost = pricing['issue_cost']
-        service_request.total_cost = pricing['total_cost']
-
-        # Add actual issues to reported set so effective_issues reflects them
-
-        actual_issues=service_request.actual_issues.all()
-        for issue in actual_issues:
             service_request.reported_issues.add(issue)
 
         service_request.save()
@@ -236,8 +221,7 @@ class ApproveQuoteView(APIView):
             'message': 'Quote approved. Mechanic can proceed with repair.',
             'request': ServiceRequestSerializer(service_request).data,
         })
-
-
+    
 class CompleteRequestView(APIView):
     """POST /api/v1/requests/{id}/complete/ - Mark as completed (after payment)."""
     permission_classes = [permissions.IsAuthenticated]
