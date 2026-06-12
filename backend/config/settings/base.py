@@ -1,11 +1,11 @@
 """
 Django base settings for Moving Garage project.
 """
-import dj_database_url
 import os
 from pathlib import Path
 from datetime import timedelta
 from dotenv import load_dotenv
+import dj_database_url
 
 load_dotenv()
 
@@ -84,10 +84,18 @@ ASGI_APPLICATION = 'config.asgi.application'
 #     }
 # }
 DATABASES = {
-    "default": dj_database_url.config(
-        default=os.getenv("DB_URL")
+    'default': dj_database_url.config(
+        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
+        conn_max_age=600,
+        conn_health_checks=True,
     )
 }
+
+if DATABASES['default']['ENGINE'] == 'django.db.backends.postgresql':
+    DATABASES['default']['OPTIONS'] = {
+        'options': '-c statement_timeout=0',
+    }
+
 # Custom user model
 AUTH_USER_MODEL = 'accounts.User'
 
