@@ -66,20 +66,19 @@ Moving Garage uses a decoupled deployment architecture, communicating securely v
 > **⚠️ Security Note:** Never commit `.env` files to version control.
 
 **Backend (`.env` or Render Dashboard):**
-```env
-DATABASE_URL=postgresql://[user]:[password]@[host]:6543/postgres
-DJANGO_DEBUG=False
-SECRET_KEY=your_django_secret
-GEOAPIFY_API_KEY=your_geoapify_key
-RAZORPAY_KEY_ID=your_razorpay_key
-RAZORPAY_KEY_SECRET=your_razorpay_secret
+* `DATABASE_URL` = `postgresql://[user]:[password]@[host]:6543/postgres`
+* `DJANGO_DEBUG` = `False`
+* `SECRET_KEY` = `your_django_secret`
+* `GEOAPIFY_API_KEY` = `your_geoapify_key`
+* `RAZORPAY_KEY_ID` = `your_razorpay_key`
+* `RAZORPAY_KEY_SECRET` = `your_razorpay_secret`
 
 **Frontend (`.env` or Vercel Dashboard):**
+* `VITE_API_URL` = `https://moving-garage.onrender.com` *(Do not include a trailing slash!)*
 
-# Do not include a trailing slash!
-VITE_API_URL=[https://moving-garage.onrender.com](https://moving-garage.onrender.com)
+---
 
-## 🤝 Contributors
+## 🤝 **Contributors**
 
 This project was collaboratively built using modern web frameworks and AI-assisted development tools by:
 
@@ -88,7 +87,7 @@ This project was collaboratively built using modern web frameworks and AI-assist
     <td align="center">
       <a href="https://github.com/vikashyadavyou">
         <img src="https://github.com/vikashyadavyou.png" width="100px;" alt="Your Name Profile Picture"/><br />
-        <sub><b>Your Name</b></sub>
+        <sub><b>Vikash</b></sub>
       </a>
     </td>
     <td align="center">
