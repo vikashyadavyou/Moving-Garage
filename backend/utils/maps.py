@@ -24,7 +24,7 @@ def calculate_distance(lat1, lon1, lat2, lon2):
             url = (
                 f'https://api.geoapify.com/v1/routing'
                 f'?waypoints={lat1},{lon1}|{lat2},{lon2}'
-                f'&mode=motorcycle'
+                f'&mode=drive'
                 f'&apiKey={api_key}'
             )
             response = requests.get(url, timeout=10)
@@ -82,7 +82,7 @@ def get_directions(origin_lat, origin_lng, dest_lat, dest_lng):
         url = (
             f'https://api.geoapify.com/v1/routing'
             f'?waypoints={origin_lat},{origin_lng}|{dest_lat},{dest_lng}'
-            f'&mode=motorcycle'
+            f'&mode=drive'
             f'&apiKey={api_key}'
         )
         response = requests.get(url, timeout=10)
